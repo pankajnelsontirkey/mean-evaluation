@@ -4,14 +4,14 @@ const bcrypt = require('bcrypt');
 const Schema = require('mongoose').Schema;
 
 const userSchema = new Schema({
-  email: { type: String, required: true, unique: true }
-  // password: { type: String, required: true },
-  // firstName: { type: String, required: true },
-  // lastName: { type: String, required: true },
-  // dob: { type: Date /* , required: true  */ },
-  // emailVerified: { type: Boolean, default: false },
-  // passwordResetToken: { type: String, default: null },
-  // passwordResetExpires: { type: Date, default: 0 }
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  dob: { type: Date /* , required: true  */ },
+  emailVerified: { type: Boolean, default: false },
+  passwordResetToken: { type: String, default: null },
+  passwordResetExpires: { type: Date, default: null }
 });
 
 userSchema.pre('save', async function(next) {

@@ -1,14 +1,10 @@
-const app = require('./app');
-const { DB_INIT } = require('./config/db');
+const dotenv = require('dotenv');
+dotenv.config();
 
-require('dotenv').config;
+const ExpressApp = require('./app');
+const AppInstance = new ExpressApp();
+const PORT = process.env.PORT;
 
-console.log(process.env.ABCD);
-
-DB_INIT();
-
-const PORT = 3000;
-
-app.listen(PORT, () => {
+AppInstance.app.listen(PORT, () => {
   console.log(`Server started. Listening on port: ${PORT}`);
 });

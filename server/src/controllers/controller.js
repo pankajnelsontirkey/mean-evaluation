@@ -1,10 +1,10 @@
 const userModel = require('../models/models').userModel;
 
-const login = (req, res) => {
+/* const login = (req, res) => {
   console.log(res.body);
-};
+}; */
 
-const signup = (req, res) => {
+/* const signup = (req, res) => {
   let newUser = new userModel(req.body);
   newUser.save((err, user) => {
     if (err) {
@@ -12,7 +12,7 @@ const signup = (req, res) => {
     }
     res.status(200).json(user);
   });
-};
+}; */
 
 const testGet = (req, res) => {
   /* let number = req.body.number;
@@ -24,13 +24,12 @@ const testGet = (req, res) => {
     ? res.send('Buzz')
     : res.json({ error: 'Bad number' }); */
   userModel.find({}).then(data => {
-    console.log(data);
     res.json(data);
   });
 };
 
 const testPost = (req, res) => {
-  console.log(`[testPost] received ${req.body}`);
+  console.log(`[testPost] received ${req}`);
 
   let user = new userModel(req.body);
   user.save((err, user) => {
@@ -47,4 +46,4 @@ const testPost = (req, res) => {
     }); */
 };
 
-module.exports = { login, signup, testGet, testPost };
+module.exports = { /* login, signup, */ testGet, testPost };
