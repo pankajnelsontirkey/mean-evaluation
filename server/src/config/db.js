@@ -1,11 +1,19 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-// const DB_URI = process.env.DB_LOCAL_URI;
-const DB_URI = 'mongodb://localhost:27017/evaluation';
+let DB_URI;
 
-const DB_INIT = () => {
+export const DB_INIT = DB_URI => {
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      DB_URI = process.env.DB_LOCAL_URI;
+      break;
+    case 'production':
+      DB_URI = process.env.DB_CLOUD_URI;
+      break;
+  }
+
+  console.log(DB_URI);
+
   mongoose.Promise = global.Promise;
-  mongoose.connect(DB_URI, { useNewUrlParser: true });
+  // mongoose.connect(DB_URI, { useNewUrlParser: true });
 };
-
-module.exports = { DB_INIT };

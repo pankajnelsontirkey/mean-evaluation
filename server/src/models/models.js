@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import * as mongoose from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 const Schema = require('mongoose').Schema;
+const SECRET = process.env.SECRET;
 
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
@@ -14,17 +16,35 @@ const userSchema = new Schema({
   passwordResetExpires: { type: Date, default: null }
 });
 
+/* to replace plain text password with its hash before saving to db */
 userSchema.pre('save', async function(next) {
   const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
   next();
 });
 
-userSchema.methods.verifyPassword = async function(password) {
+/* to validate  password that arrives from login with the one save in db */
+userSchema.methods.validatePassword = async function(password) {
   const passwordMatch = await bcrypt.compare(password, this.password);
   return passwordMatch;
 };
 
+/* to generate a JWT token to be sent as response on successful login */
+userSchema.methods.generateJWT = async function() {
+  const today = new Date();
+  const expirationDate = new Date(today);
+  expirationDate.setDate(today.getDate() + 60);
+  return jwt.sign(
+    {
+      email: this.email,
+      id: this._id,
+      expiresIn: parseInt(expirationDate.getTime() / 1000, 10)
+    },
+    SECRET
+  );
+};
+
+/* for use when creating tokens for emailVerification & forgot/reset password use cases */
 const tokenSchema = new Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Users' },
   token: { type: String, required: true },
@@ -33,8 +53,5 @@ const tokenSchema = new Schema({
 });
 
 // eslint-disable-next-line new-cap
-const userModel = new mongoose.model('users', userSchema);
-
-const tokenModel = new mongoose.model('tokens', tokenSchema);
-
-module.exports = { userModel, tokenModel };
+export const userModel = new mongoose.model('users', userSchema);
+export const tokenModel = new mongoose.model('tokens', tokenSchema);

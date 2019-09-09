@@ -1,10 +1,14 @@
-const dotenv = require('dotenv');
-dotenv.config();
+import { config } from 'dotenv';
+config();
 
-const ExpressApp = require('./app');
-const AppInstance = new ExpressApp();
+import { ExpressApp } from './expressApp';
+import { DB_INIT } from './config/db';
+
+const App = new ExpressApp().app;
 const PORT = process.env.PORT;
 
-AppInstance.app.listen(PORT, () => {
-  console.log(`Server started. Listening on port: ${PORT}`);
+DB_INIT();
+
+App.listen(PORT, () => {
+  console.log(`Server is listening on port: ${PORT}`);
 });

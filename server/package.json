@@ -4,7 +4,9 @@
   "description": "express server backend",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon ./src/server.js"
+    "build": "rm -rf dist && webpack --mode development --watch",
+    "start": "node ./dist/server.js",
+    "dev": "nodemon ./dist/server.js"
   },
   "keywords": [
     "express"
@@ -24,6 +26,12 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-node": "^4.0.0",
@@ -31,6 +39,9 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8",
+    "webpack-node-externals": "^1.7.2"
   }
 }
