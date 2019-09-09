@@ -1,4 +1,4 @@
-import { userModel } from '../models/models';
+import { userModel } from '../models/userModel';
 
 export const authController = {
   login: (req, res) => {

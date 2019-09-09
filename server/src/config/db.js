@@ -12,8 +12,6 @@ export const DB_INIT = DB_URI => {
       break;
   }
 
-  console.log(DB_URI);
-
   mongoose.Promise = global.Promise;
-  // mongoose.connect(DB_URI, { useNewUrlParser: true });
+  mongoose.connect(DB_URI, { useNewUrlParser: true });
 };

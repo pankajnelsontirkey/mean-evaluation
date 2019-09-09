@@ -1,1 +1,1 @@
-import {} from '../models/models';
+import { userModel } from '../models/models';
