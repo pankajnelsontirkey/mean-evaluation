@@ -11,6 +11,7 @@ const userSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   dob: { type: Date /* , required: true  */ },
+  role: { type: String, default: 'user' },
   emailVerified: { type: Boolean, default: false },
   passwordResetToken: { type: String, default: null },
   passwordResetExpires: { type: Date, default: null }
@@ -18,15 +19,23 @@ const userSchema = new Schema({
 
 /* to replace plain text password with its hash before saving to db */
 userSchema.pre('save', async function(next) {
-  const hash = await bcrypt.hash(this.password, 10);
-  this.password = hash;
-  next();
+  try {
+    const hash = await bcrypt.hash(this.password, 10);
+    this.password = hash;
+    next();
+  } catch (error) {
+    return next(error);
+  }
 });
 
 /* to validate  password that arrives from login with the one save in db */
 userSchema.methods.validatePassword = async function(password) {
-  const passwordMatch = await bcrypt.compare(password, this.password);
-  return passwordMatch;
+  try {
+    const passwordMatch = await bcrypt.compare(password, this.password);
+    return passwordMatch;
+  } catch (error) {
+    return next(error);
+  }
 };
 
 /* to generate a JWT token to be sent as response on successful login */
