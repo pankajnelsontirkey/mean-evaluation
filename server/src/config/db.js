@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-let DB_URI;
+let DB_URI = '';
 
 export const DB_INIT = DB_URI => {
   switch (process.env.NODE_ENV) {
