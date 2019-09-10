@@ -1,9 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 
-const Schema = require('mongoose').Schema;
-const SECRET = process.env.SECRET;
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
@@ -24,33 +22,19 @@ userSchema.pre('save', async function(next) {
     this.password = hash;
     next();
   } catch (error) {
-    return next(error);
+    throw Error(error);
   }
 });
 
-/* to validate  password that arrives from login with the one save in db */
-userSchema.methods.validatePassword = async function(password) {
-  try {
-    const passwordMatch = await bcrypt.compare(password, this.password);
-    return passwordMatch;
-  } catch (error) {
-    return next(error);
-  }
-};
+/*  */
 
-/* to generate a JWT token to be sent as response on successful login */
-userSchema.methods.generateJWT = async function() {
-  const today = new Date();
-  const expirationDate = new Date(today);
-  expirationDate.setDate(today.getDate() + 60);
-  return jwt.sign(
-    {
-      email: this.email,
-      id: this._id,
-      expiresIn: parseInt(expirationDate.getTime() / 1000, 10)
-    },
-    SECRET
-  );
+userSchema.methods.verifyPassword = async function(password) {
+  try {
+    let passCheck = await bcrypt.compare(password, this.password);
+    return passCheck;
+  } catch (e) {
+    console.log(`verifyPassword catch block: ${e}`);
+  }
 };
 
 // eslint-disable-next-line new-cap

@@ -12,6 +12,7 @@ router.post('/login', authController.login);
 /* router.get('/signup', (req, res) => {
   res.send('received GET req at /signup');
 }); */
+
 router.post('/signup', authController.signup);
 
 export default router;

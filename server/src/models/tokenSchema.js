@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
-import * as jwt from 'jsonwebtoken';
+
+const Schema = mongoose.Schema;
 
 /* for use when creating tokens for emailVerification & forgot/reset password use cases */
 const tokenSchema = new Schema({
@@ -8,5 +9,9 @@ const tokenSchema = new Schema({
   /* 'createdAt' - 'expires' set to 24hrs (*60*60) in seconds */
   createdAt: { type: Date, required: true, default: Date.now, expires: 86400 }
 });
+
+tokenSchema.methods.verifyToken = async function() {
+  /* return boolean */
+};
 
 export const tokenModel = new mongoose.model('tokens', tokenSchema);
