@@ -11,6 +11,7 @@ const userSchema = new Schema({
   dob: { type: Date /* , required: true  */ },
   role: { type: String, default: 'user' },
   emailVerified: { type: Boolean, default: false },
+  emailToken: { type: String, default: null },
   passwordResetToken: { type: String, default: null },
   passwordResetExpires: { type: Date, default: null }
 });

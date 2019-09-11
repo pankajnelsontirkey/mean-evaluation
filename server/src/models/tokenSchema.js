@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const { Schema } = mongoose.Schema;
+const { Schema } = mongoose;
 
 /* for use when creating tokens for emailVerification & forgot/reset password use cases */
 const tokenSchema = new Schema({

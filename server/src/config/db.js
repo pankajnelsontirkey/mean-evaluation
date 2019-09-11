@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const DB_INIT = () => {
+const DB_INIT = async () => {
   let DB_URI = '';
   switch (process.env.NODE_ENV) {
     case 'development':
@@ -14,7 +14,11 @@ const DB_INIT = () => {
   }
 
   mongoose.Promise = global.Promise;
-  mongoose.connect(DB_URI, { useNewUrlParser: true });
+  try {
+    await mongoose.connect(DB_URI, { useNewUrlParser: true });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export default DB_INIT;
