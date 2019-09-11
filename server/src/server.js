@@ -1,11 +1,11 @@
 import { config } from 'dotenv';
-config();
-
-import { ExpressApp } from './expressApp';
+import ExpressApp from './expressApp';
 import { DB_INIT } from './config/db';
 
+config();
+
 const App = new ExpressApp().app;
-const PORT = process.env.PORT;
+const { PORT } = process.env.PORT;
 
 DB_INIT();
 

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose.Schema;
 
 /* for use when creating tokens for emailVerification & forgot/reset password use cases */
 const tokenSchema = new Schema({
@@ -14,4 +14,7 @@ tokenSchema.methods.verifyToken = async function() {
   /* return boolean */
 };
 
-export const tokenModel = new mongoose.model('tokens', tokenSchema);
+// eslint-disable-next-line new-cap
+const tokenModel = new mongoose.model('tokens', tokenSchema);
+
+export default tokenModel;

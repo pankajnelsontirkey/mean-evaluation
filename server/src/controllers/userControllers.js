@@ -1,6 +1,6 @@
-import { userModel } from '../models/userModel';
+// import userModel from '../models/userSchema';
 
-export const usersController = {
+const usersController = {
   /* Add users to db */
   addUser: (req, res) => {},
   /* Get users from db */
@@ -8,3 +8,5 @@ export const usersController = {
   /* Get user by id */
   getUserById: (req, res) => {}
 };
+
+export default usersController;

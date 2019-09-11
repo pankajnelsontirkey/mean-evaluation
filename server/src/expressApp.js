@@ -5,7 +5,7 @@ import cors from 'cors';
 import testRoutes from './routes/api/testRoutes';
 import authRoutes from './routes/authRoutes';
 
-export class ExpressApp {
+export default class ExpressApp {
   constructor() {
     this.app = express();
     this.config();

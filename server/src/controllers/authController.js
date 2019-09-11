@@ -1,16 +1,18 @@
-import { userModel } from '../models/userSchema';
-import { responseHandler } from '../utils/responseHandler';
-import { utils } from '../utils/utils';
-import * as jwt from 'jsonwebtoken';
+/* eslint-disable no-underscore-dangle */
+import userModel from '../models/userSchema';
+import responseHandler from '../utils/responseHandler';
+import utils from '../utils/utils';
+// import * as jwt from 'jsonwebtoken';
 
-export const authController = {
+const authController = {
   /**
    *  Signup a new user
    *
    */
   signup: (req, res) => {
-    const user = new userModel(req.body);
-    user.save(async (err, user) => {
+    // eslint-disable-next-line new-cap
+    const newUser = new userModel(req.body);
+    newUser.save(async (err, user) => {
       if (err || !user) {
         responseHandler(res, 500, err, 'Registration failed');
       } else {
@@ -18,7 +20,10 @@ export const authController = {
           newUser: { id: user._id, email: user.email }
         });
         try {
-          let emailToken = await utils.generateEmailToken(user.email, user._id);
+          const emailToken = await utils.generateEmailToken(
+            user.email,
+            user._id
+          );
           /* Call nodemailer here, passing the emailVerificationToken generated in the previous step */
         } catch (e) {
           console.log(e);
@@ -48,7 +53,7 @@ export const authController = {
             errMsg: 'Incorrect password'
           });
         } else {
-          /* let loginToken =  await*/
+          /* let loginToken =  await */
           utils.generateLoginToken(user._id, user.role).then(loginToken => {
             responseHandler(res, 200, null, 'Logged in successfully', {
               user: { id: user._id, token: loginToken }
@@ -60,3 +65,5 @@ export const authController = {
     });
   }
 };
+
+export default authController;

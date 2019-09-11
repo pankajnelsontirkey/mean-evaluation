@@ -1,19 +1,23 @@
 {
-  /* "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true,
+  "env": {
+    // "browser": true,
+    // "commonjs": true,
+    // "es6": true,
     "node": true
-  }, */
+  },
+  "parser": "babel-eslint",
   "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
   "plugins": ["prettier"],
   /* "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   }, */
-  /* "parserOptions": {
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywherer": true,
+    "ecmaFeatures": { "globalReturn": false },
     "ecmaVersion": 2018
-  }, */
+  },
   "rules": {
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
@@ -22,6 +26,7 @@
     "func-names": "off",
     "no-process-exit": "off",
     /* "object-shorthand":"off", */
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "node/no-unsupported-features/es-syntax": ["off", { "version": ">=10.0.0" }]
   }
 }

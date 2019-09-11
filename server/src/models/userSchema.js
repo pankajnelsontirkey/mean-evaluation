@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose.Schema;
 
 const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
@@ -30,12 +30,15 @@ userSchema.pre('save', async function(next) {
 
 userSchema.methods.verifyPassword = async function(password) {
   try {
-    let passCheck = await bcrypt.compare(password, this.password);
+    const passCheck = await bcrypt.compare(password, this.password);
     return passCheck;
   } catch (e) {
     console.log(`verifyPassword catch block: ${e}`);
+    return Error(e);
   }
 };
 
 // eslint-disable-next-line new-cap
-export const userModel = new mongoose.model('users', userSchema);
+const userModel = new mongoose.model('users', userSchema);
+
+export default userModel;

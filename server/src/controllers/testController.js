@@ -1,1 +1,1 @@
-import { userModel } from '../models/models';
+import userModel from '../models/userSchema';
