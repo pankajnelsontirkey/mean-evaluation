@@ -1,11 +1,15 @@
 import { config } from 'dotenv';
-import ExpressApp from './expressApp';
-import { DB_INIT } from './config/db';
 
 config();
 
+// eslint-disable-next-line import/first
+import ExpressApp from './expressApp';
+// eslint-disable-next-line import/first
+import DB_INIT from './config/db';
+
 const App = new ExpressApp().app;
-const { PORT } = process.env.PORT;
+// eslint-disable-next-line prefer-destructuring
+const PORT = process.env.PORT;
 
 DB_INIT();
 

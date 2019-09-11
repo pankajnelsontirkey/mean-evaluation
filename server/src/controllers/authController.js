@@ -38,7 +38,7 @@ const authController = {
    */
   login: (req, res) => {
     /* Checking if email exists in database */
-    userModel.findOne({ email: req.body.email }, (err, user) => {
+    userModel.findOne({ email: req.body.email }, async (err, user) => {
       if (err) {
         responseHandler(res, 500, err, null, null);
       }
@@ -46,22 +46,25 @@ const authController = {
         responseHandler(res, 404, null, 'Email not found', null);
       }
       /* use model instance method to check password */
-      user.verifyPassword(req.body.password).then(value => {
-        if (!value) {
+      try {
+        const passwordMatch = await user.verifyPassword(req.body.password);
+        if (!passwordMatch) {
           responseHandler(res, 401, {
             errName: 'Invalid Credentials',
             errMsg: 'Incorrect password'
           });
         } else {
-          /* let loginToken =  await */
-          utils.generateLoginToken(user._id, user.role).then(loginToken => {
-            responseHandler(res, 200, null, 'Logged in successfully', {
-              user: { id: user._id, token: loginToken }
-            });
+          const loginToken = await utils.generateLoginToken(
+            user._id,
+            user.role
+          );
+          responseHandler(res, 200, null, 'Logged in successfully', {
+            user: { id: user._id, token: loginToken }
           });
         }
-        /* if password matches, proceed to generate loginToken */
-      });
+      } catch (e) {
+        console.log(e);
+      }
     });
   }
 };
