@@ -11,9 +11,12 @@ const authController = {
   /**
    *  Signup a new user
    */
-  signup: (req, res) => {
-    const newUser = new userModel(req.body);
-    newUser.save(async (err, userItem) => {
+  signup: async (req, res) => {
+    const passwordHash = await utils.bcryptGenerateHash(req.body.password);
+    const userObj = { ...req.body, password: passwordHash };
+    console.log(userObj);
+
+    userModel.create(userObj, async (err, userItem) => {
       if (err || !userItem) {
         responseHandler(res, 500, err, 'Registration failed', null);
       } else {
@@ -26,9 +29,8 @@ const authController = {
         } catch (e) {
           console.log(e);
         }
-        // eslint-disable-next-line no-param-reassign
-        userItem.emailToken = emailToken;
-        userItem.save();
+
+        userModel.updateOne({ _id: userItem._id }, { password: emailToken });
 
         responseHandler(res, 200, null, `Registration was successful.`, {
           newUser: { id: userItem._id, email: userItem.email }
@@ -55,9 +57,9 @@ const authController = {
             }`;
             console.log(mailerResponseMessage);
           }
-          console.log(
+          /* console.log(
             `Mail sent successfully to ${mailerResponse.envelope.to}`
-          );
+          ); */
         } catch (e) {
           console.log(e);
         }
@@ -69,7 +71,6 @@ const authController = {
    * Login an existing user
    */
   login: (req, res) => {
-    /* Checking if email exists in database */
     userModel.findOne({ email: req.body.email }, async (err, user) => {
       if (err) {
         responseHandler(res, 500, err, 'Server Error', null);
@@ -77,25 +78,48 @@ const authController = {
       if (!user) {
         responseHandler(res, 404, null, 'Email not found', null);
       }
+
       /* use model instance method to check password */
-      try {
-        const passwordMatch = await user.verifyPassword(req.body.password);
-        if (!passwordMatch) {
-          responseHandler(res, 401, {
-            errName: 'Invalid Credentials',
-            errMsg: 'Incorrect password'
-          });
-        } else {
-          const loginToken = await utils.generateLoginToken(
-            user._id,
-            user.role
+      if (!user.emailVerified) {
+        responseHandler(
+          res,
+          401,
+          {
+            errName: 'emailVerification',
+            errMsg: 'Email has not been verified'
+          },
+          'Please check your mail for verification link.',
+          null
+        );
+      } else {
+        try {
+          const passwordMatch = await utils.bcryptVerifyHash(
+            req.body.password,
+            user.password
           );
-          responseHandler(res, 200, null, 'Logged in successfully', {
-            user: { id: user._id, token: loginToken }
-          });
+          if (!passwordMatch) {
+            responseHandler(
+              res,
+              401,
+              {
+                errName: 'Invalid Credentials',
+                errMsg: 'Incorrect password'
+              },
+              'Incorrect Password was entered.',
+              null
+            );
+          } else {
+            const loginToken = await utils.generateLoginToken(
+              user._id,
+              user.role
+            );
+            responseHandler(res, 200, null, 'Logged in successfully', {
+              user: { id: user._id, token: loginToken }
+            });
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
     });
   },

@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 
 const utils = {
   /* Method to generate a token for email verification */
@@ -24,9 +25,20 @@ const utils = {
   /* Method to generate loginToken after successful login */
   generateLoginToken: async (userId, userRole) =>
     jwt.sign({ _id: userId, role: userRole }, process.env.SECRET),
+
   /* Method to check if login token is valid */
   checkLoginToken: () => {
     /* return boolean */
+  },
+
+  bcryptGenerateHash: async password => {
+    const hash = await bcrypt.hash(password, 10);
+    return hash;
+  },
+
+  bcryptVerifyHash: async (password, hash) => {
+    const isMatch = await bcrypt.compare(password, hash);
+    return isMatch;
   }
 };
 
