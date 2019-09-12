@@ -5,5 +5,8 @@
       { "modules": false, "useBuiltIns": "usage", "corejs": "2.0.0" }
     ]
   ],
-  "plugins": ["@babel/plugin-proposal-class-properties"]
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "transform-object-rest-spread"
+  ]
 }

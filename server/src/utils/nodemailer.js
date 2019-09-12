@@ -1,34 +1,40 @@
 import * as nodemailer from 'nodemailer';
+import {
+  configDefault,
+  optionsDefault,
+  verificationLink
+} from '../config/mailConfig';
 
 class Mailer {
-  constructor(config, message) {
-    this.mailConfig = config;
-    this.mailOptions = message;
-    this.transporter = nodemailer.createTransport(this.mailConfig);
+  constructor() {
+    this.config = { ...configDefault };
+    this.options = { ...optionsDefault };
+    this.transporter = nodemailer.createTransport(this.config);
   }
 
-  setReceiver(email) {
-    this.mailOptions.to = email;
-  }
+  /* setReceiver(email) {
+    this.options.to = email;
+  } */
 
-  setMessage(messageObject) {
-    this.mailOptions.to = messageObject.email;
-    this.mailOptions.text.replace('__email__', messageObject.email);
-    this.mailOptions.html.replace('__link__', messageObject.link);
+  setOptions(options) {
+    const newText = this.options.text
+      .replace('__email__', options.email)
+      .replace('__link__', `${verificationLink}/${options.token}`);
+    const newHtml = this.options.html
+      .replace('__email__', options.email)
+      .replace('__link__', `${verificationLink}/${options.token}`);
 
-    console.log(this.mailOptions);
+    this.options = {
+      ...this.options,
+      to: options.email,
+      text: newText,
+      html: newHtml
+    };
   }
 
   async sendMail() {
-    this.transporter.sendMail(this.message, (error, info) => {
-      if (error) {
-        console.log(error);
-      }
-      console.log(`Message sent: ${info}`);
-    });
-
-    /*   (error, info) => {
-     */
+    const mailerResponse = await this.transporter.sendMail(this.options);
+    return { ...mailerResponse };
   }
 }
 

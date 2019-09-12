@@ -5,7 +5,6 @@ import * as jwt from 'jsonwebtoken';
 import responseHandler from '../utils/responseHandler';
 import userModel from '../models/userSchema';
 import utils from '../utils/utils';
-import { config, options, verificationLink } from '../config/mailConfig';
 import Mailer from '../utils/nodemailer';
 
 const authController = {
@@ -36,15 +35,29 @@ const authController = {
         });
 
         /* Send verification link via nodemailer */
-        const mailer = new Mailer(config, options);
-        mailer.setMessage({
-          email: userItem.email,
-          link: verificationLink + emailToken
-        });
-
         try {
+          const mailer = new Mailer();
+          mailer.setOptions({
+            email: userItem.email,
+            token: emailToken
+          });
           const mailerResponse = await mailer.sendMail();
-          console.log(mailerResponse);
+          let mailerResponseMessage = '';
+          if (mailerResponse.accepted.length) {
+            mailerResponseMessage = `Mail sent successfully to ${
+              mailerResponse.accepted[0]
+            } with messageId: ${mailerResponse.messageId}`;
+            console.log(mailerResponseMessage);
+          }
+          if (mailerResponse.rejected.length) {
+            mailerResponseMessage = `Sending mail failed to ${
+              mailerResponse.rejected[0]
+            }`;
+            console.log(mailerResponseMessage);
+          }
+          console.log(
+            `Mail sent successfully to ${mailerResponse.envelope.to}`
+          );
         } catch (e) {
           console.log(e);
         }
@@ -91,18 +104,33 @@ const authController = {
     const { token } = req.params;
     const decoded = jwt.verify(token, process.env.SECRET);
     try {
-      const verifiedUser = await userModel.findOne(
-        { email: decoded.email },
-        { $set: { emailVerified: true } },
-        { new: true }
-      );
-
-      responseHandler(res, 200, null, 'Email verified successfully', {
-        user: verifiedUser._id
-      });
+      const registeredUser = await userModel.findOne({ email: decoded.email });
+      if (!registeredUser) {
+        responseHandler(res, 200, null, 'Email not found.', {
+          user: registeredUser._id
+        });
+      } else {
+        try {
+          registeredUser.emailVerified = true;
+          registeredUser.emailToken = null;
+          const verifiedUser = await registeredUser.save();
+          responseHandler(res, 200, null, 'Email verified successfully.', {
+            user: verifiedUser._id
+          });
+        } catch (e) {
+          console.log(e);
+          throw Error(e);
+        }
+      }
     } catch (e) {
-      responseHandler(res, 500, e, 'Email verified successfully', null);
       console.log(e);
+      responseHandler(
+        res,
+        500,
+        e,
+        'An error occurred while trying verification.',
+        null
+      );
     }
   }
 };

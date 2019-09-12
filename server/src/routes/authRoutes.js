@@ -16,6 +16,6 @@ router.post('/login', authController.login);
 
 router.post('/signup', authController.signup);
 
-router.post('/verify/:token', authController.verifyEmail);
+router.get('/verify/:token', authController.verifyEmail);
 
 export default router;

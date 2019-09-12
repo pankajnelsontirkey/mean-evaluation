@@ -4,7 +4,7 @@
  * TODO - set sender mail dynamically for dev mode or prod mode
  */
 
-export const config = {
+export const configDefault = {
   host: 'mail.vinove.com',
   port: 587,
   secure: false, // true only for port 465
@@ -19,22 +19,24 @@ export const config = {
   }
 };
 
-export const options = {
+export const optionsDefault = {
   from: '<pankaj.tirkey@mail.vinove.com>',
   /* 'to' field needs to be filled before sendMail is called */
   to: null,
   subject: 'Welcome to ShareApp, verify email to continue.',
   /* Add verification token & veriication endpoint as text */
   text: `
-  Your registration with __email__ was successful. Please follow the link to verify your email and proceed to using the app.
+  Your registration with __email__ was successful. Please follow the link to verify your email and proceed to using the app. 
+  Copy & paste the following link in a new browser tab's address bar to verify. 
+  __link__
   `,
   /* Add verification token & veriication endpoint to html */
   html: `
   <p>
-  Your registration was successful. Please follow the link to verify your email and proceed to using the app.
+  Your registration with __email__ was successful . Please follow the link to verify your email and proceed to using the app.
   <a href=__link__>Verify</a>
   </p>
   `
 };
 
-export const verificationLink = 'http://localhost:3000/verify/';
+export const verificationLink = 'http://localhost:3000/verify';
