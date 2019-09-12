@@ -9,7 +9,7 @@ const responseHandler = (res, code, err, msg, responseData) => {
   const error = err !== null ? { error: err.name, message: err.errmsg } : null;
   const message = msg !== null ? msg : '';
 
-  res.status(code).send({ error, message, data });
+  return res.status(code).send({ error, message, data });
 };
 
 export default responseHandler;

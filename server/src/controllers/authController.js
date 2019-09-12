@@ -14,7 +14,6 @@ const authController = {
   signup: async (req, res) => {
     const passwordHash = await utils.bcryptGenerateHash(req.body.password);
     const userObj = { ...req.body, password: passwordHash };
-    console.log(userObj);
 
     userModel.create(userObj, async (err, userItem) => {
       if (err || !userItem) {
@@ -138,9 +137,8 @@ const authController = {
           registeredUser.emailVerified = true;
           registeredUser.emailToken = null;
           const verifiedUser = await registeredUser.save();
-          responseHandler(res, 200, null, 'Email verified successfully.', {
-            user: verifiedUser._id
-          });
+          console.log(`User with email ${verifiedUser} has a valid email.`);
+          res.redirect('http://localhost:4200');
         } catch (e) {
           console.log(e);
           throw Error(e);
