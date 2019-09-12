@@ -20,18 +20,10 @@ const utils = {
     // return jwt.verify(token, process.env.SECRET);
     /* return boolean  */
   },
-  /* Method to generate loginToken after successful login */
-  generateLoginToken: async (userId, userRole) => {
-    /* return login token */
-    return jwt.sign(
-      {
-        _id: userId,
-        role: userRole
-      },
-      process.env.SECRET
-    );
-  },
 
+  /* Method to generate loginToken after successful login */
+  generateLoginToken: async (userId, userRole) =>
+    jwt.sign({ _id: userId, role: userRole }, process.env.SECRET),
   /* Method to check if login token is valid */
   checkLoginToken: () => {
     /* return boolean */
