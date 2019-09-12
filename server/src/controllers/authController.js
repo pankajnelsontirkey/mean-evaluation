@@ -138,7 +138,7 @@ const authController = {
           registeredUser.emailToken = null;
           const verifiedUser = await registeredUser.save();
           console.log(`User with email ${verifiedUser} has a valid email.`);
-          res.redirect('http://localhost:4200');
+          res.redirect(process.env.CLIENT_URL);
         } catch (e) {
           console.log(e);
           throw Error(e);
