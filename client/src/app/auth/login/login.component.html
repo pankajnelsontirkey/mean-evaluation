@@ -1,1 +1,37 @@
-<div class="container"></div>
+<div class="container">
+  <form [formGroup]="loginForm" (submit)="onSubmit()">
+    <div class="form-group row">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+        placeholder="mail@domain.com"
+        required
+        email
+      />
+      <span
+        class="help-text alert-danger"
+        *ngIf="loginForm.get('email').touched && !loginForm.get('email').valid"
+      >
+        Email is required.
+      </span>
+    </div>
+    <div class="form-group row">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+        placeholder="Between 6 to 20 characters."
+        required
+      />
+    </div>
+
+    <div class="row">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+  </form>
+</div>

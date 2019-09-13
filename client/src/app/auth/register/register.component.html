@@ -1,1 +1,114 @@
-<p>register works!</p>
+<div class="container">
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <!-- FIRST NAME -->
+    <div class="form-group row row">
+      <label for="firstName">First Name</label>
+      <input
+        type="text"
+        id="firstName"
+        formControlName="firstName"
+        class="form-control"
+        required
+      />
+      <span
+        class="help-text alert-danger"
+        *ngIf="
+          registrationForm.get('firstName').touched &&
+          !registrationForm.get('firstName').valid
+        "
+      >
+        First name is required.
+      </span>
+    </div>
+
+    <!-- LAST NAME -->
+    <div class="form-group row">
+      <label for="firstName">Last Name</label>
+      <input
+        type="text"
+        id="lastName"
+        formControlName="lastName"
+        class="form-control"
+        required
+      />
+      <span
+        class="help-text alert-danger"
+        *ngIf="
+          registrationForm.get('lastName').touched &&
+          !registrationForm.get('lastName').valid
+        "
+      >
+        Last name is required.
+      </span>
+    </div>
+
+    <!-- EMAIL -->
+    <div class="form-group row">
+      <label for="firstName">Email</label>
+      <input
+        type="text"
+        id="email"
+        formControlName="email"
+        class="form-control"
+        required
+      />
+      <span
+        class="help-text alert-danger"
+        *ngIf="
+          registrationForm.get('email').touched &&
+          !registrationForm.get('email').valid
+        "
+      >
+        A valid email address is required.
+      </span>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group row">
+      <label for="firstName">Password</label>
+      <input
+        type="text"
+        id="password"
+        formControlName="password"
+        class="form-control"
+        required
+      />
+      <span
+        class="help-text alert-danger"
+        *ngIf="
+          registrationForm.get('password').touched &&
+          !registrationForm.get('password').valid
+        "
+      >
+        Password is required.
+      </span>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-group row">
+      <label for="firstName">Confirm Password</label>
+      <input
+        type="text"
+        id="cpassword"
+        formControlName="cpassword"
+        class="form-control"
+        required
+      />
+      <span
+        class="help-text alert-danger"
+        *ngIf="
+          registrationForm.get('cpassword').touched &&
+          !registrationForm.get('cpassword').valid
+        "
+      >
+        Re-enter password to confirm.
+      </span>
+    </div>
+
+    <div class="row">
+      <button type="submit" class="btn btn-primary">
+        Register
+      </button>
+    </div>
+  </form>
+</div>
