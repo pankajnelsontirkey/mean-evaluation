@@ -12,15 +12,23 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(loginData: ILogin) {
-    console.log(loginData);
-    /* Maket http request to backend */
-    this.http.post<IUser>(`${this.server_url}/login`, loginData);
-  }
-
   register(registerData: IRegister) {
     console.log(registerData);
     /* Make http request to backend */
-    this.http.post(`${this.server_url}/register`, registerData);
+    this.http
+      .post(`${this.server_url}/register`, registerData)
+      .subscribe(response => {
+        console.log(response);
+      });
+  }
+
+  login(loginData: ILogin) {
+    console.log(loginData);
+    /* Maket http request to backend */
+    this.http
+      .post<IUser>(`${this.server_url}/login`, loginData)
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 }

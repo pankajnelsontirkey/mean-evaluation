@@ -36,6 +36,12 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authService.register(this.registrationForm.value);
+    const registerObject: IRegister = {
+      firstName: this.registrationForm.value.firstName,
+      lastName: this.registrationForm.value.lastName,
+      email: this.registrationForm.value.email,
+      password: this.registrationForm.value.password
+    };
+    this.authService.register(registerObject);
   }
 }
