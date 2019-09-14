@@ -10,10 +10,14 @@ import { ILogin } from 'src/app/shared/interfaces/userInterface';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  isFormValid = false;
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.initForm();
+    this.loginForm.statusChanges.subscribe(status => {
+      this.isFormValid = status;
+    });
   }
 
   initForm() {
@@ -28,10 +32,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const loginObject: ILogin = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password
-    };
-    this.authService.login(loginObject);
+    if (this.loginForm.valid) {
+      const loginObject: ILogin = {
+        email: this.loginForm.value.email,
+        password: this.loginForm.value.password
+      };
+      this.authService.login(loginObject);
+    }
   }
 }

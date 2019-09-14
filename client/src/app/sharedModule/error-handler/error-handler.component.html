@@ -1,0 +1,10 @@
+<div class="container">
+  <div>
+    <ul class="list-group" *ngIf="show">
+      <li class="list-item" *ngFor="let error of errors">
+        <span>{{ error.name }}</span>
+        <span>{{ error.message }}</span>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -73,6 +73,13 @@ const authController = {
       /*  */
       const { token } = req.params;
       if (!token) {
+        responseHandler(
+          res,
+          400,
+          { name: 'noTokenReceived', errMsg: 'No token found in parameters' },
+          'Token not received.',
+          null
+        );
         throw Error({
           name: 'noTokenReceived',
           errMsg: 'No token found in parameters'
@@ -84,7 +91,7 @@ const authController = {
       try {
         const registeredUser = await userModel.findOne({ email });
         if (!registeredUser) {
-          responseHandler(res, 200, null, 'Email not found.', {
+          responseHandler(res, 404, null, 'Email not found.', {
             user: registeredUser._id
           });
           throw Error({
@@ -92,22 +99,51 @@ const authController = {
             errMsg: 'Email not registered.'
           });
         }
-        if (token !== registeredUser.token)
-          try {
-            registeredUser.emailVerified = true;
-            registeredUser.emailToken = null;
-            const verifiedUser = await registeredUser.save();
-            console.log(
-              `User with email ${verifiedUser.email} has a valid email.`
+        if (token !== registeredUser.token) {
+          responseHandler(
+            res,
+            400,
+            {
+              name: 'tokenMismatch',
+              errMsg: 'Token does not match current user.'
+            },
+            'Invalid token received',
+            null
+          );
+          throw Error({
+            name: 'tokenMismatch',
+            errMsg: 'Token does not belong to current user.'
+          });
+        }
+
+        try {
+          registeredUser.emailVerified = true;
+          registeredUser.emailToken = null;
+          const verifiedUser = await registeredUser.save();
+          if (!verifiedUser) {
+            responseHandler(
+              res,
+              500,
+              {
+                name: 'Error setting emailVerified.',
+                errMsg: 'emailVerified could not be updated.'
+              },
+              null
             );
-            res.redirect(process.env.CLIENT_URL);
-          } catch (e) {
-            console.log(e);
-            throw Error(e);
+            throw Error({
+              name: 'Error setting emailVerified.',
+              errMsg: 'emailVerified could not be updated.'
+            });
           }
+          /* SUCCESS */
+          res.status(200).redirect(process.env.CLIENT_URL);
+        } catch (e) {
+          responseHandler(res, 500, e, 'An exception was encountered.', null);
+          throw Error(e);
+        }
       } catch (e) {
-        console.log(e);
         responseHandler(res, 500, e, 'An error occurred while.', null);
+        throw Error(e);
       }
     } catch (e) {
       console.log(e);
