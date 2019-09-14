@@ -10,6 +10,8 @@ import { IRegister } from '../../shared/interfaces/userInterface';
 })
 export class RegisterComponent implements OnInit {
   registrationForm: FormGroup;
+  error: boolean = null;
+  errorDetails: {};
 
   constructor(private authService: AuthService) {}
 

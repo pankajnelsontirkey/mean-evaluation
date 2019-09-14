@@ -4,12 +4,17 @@
  * info - message in case of no error/successful operation
  */
 
-const responseHandler = (res, code, err, msg, responseData) => {
-  const data = responseData !== null ? responseData : null;
-  const error = err !== null ? { error: err.name, message: err.errmsg } : null;
+const responseHandler = (res, code, err, msg, data) => {
+  const body = data !== null ? data : null;
+  const error = err !== null ? { name: err.name, message: err.errmsg } : null;
   const message = msg !== null ? msg : '';
+  const resObj = {
+    error,
+    message,
+    body: { ...body }
+  };
 
-  return res.status(code).send({ error, message, data });
+  return res.status(code).json(resObj);
 };
 
 export default responseHandler;

@@ -15,11 +15,14 @@ const utils = {
   },
 
   /* Method to verify a token */
-  checkEmailToken: async token => {
+  checkEmailToken: token => {
     console.log(token);
-
-    // return jwt.verify(token, process.env.SECRET);
-    /* return boolean  */
+    const decoded = jwt.verify(token, process.env.SECRET);
+    if (!decoded && !decoded.email) {
+      const err = { name: 'badToken', errMsg: 'Bad token received.' };
+      throw Error(err);
+    }
+    return decoded.email;
   },
 
   /* Method to generate loginToken after successful login */
@@ -27,7 +30,9 @@ const utils = {
     jwt.sign({ _id: userId, role: userRole }, process.env.SECRET),
 
   /* Method to check if login token is valid */
-  checkLoginToken: () => {
+  checkLoginToken: async userToken => {
+    const decodedUser = jwt.verify(userToken, process.env.SECRET);
+
     /* return boolean */
   },
 
