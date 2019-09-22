@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { ILogin, IRegister, IUser } from '../shared/interfaces/userInterface';
 import { BehaviorSubject } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  serverUrl: string = 'http://localhost:3000';
+  serverUrl: string = environment.serverUri;
   isLoggedIn: boolean = false;
   currentUser: IUser = null;
   currentUserChanged = new BehaviorSubject<IUser>(null);
@@ -17,11 +19,9 @@ export class AuthService {
   register(registerData: IRegister) {
     /* Make http request to backend */
     try {
-      this.http
-        .post(`${this.serverUrl}/register`, registerData)
-        .subscribe(res => {
-          console.log(res);
-        });
+      this.http.post(`${this.serverUrl}/register`, registerData).subscribe(res => {
+        console.log(res);
+      });
     } catch (e) {
       console.log(e);
     }

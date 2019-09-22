@@ -21,6 +21,7 @@
   "rules": {
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
+    "linebreak-style": "warn",
     /* "linebreak-style":"warn", */
     "no-console": "off",
     "func-names": "off",
