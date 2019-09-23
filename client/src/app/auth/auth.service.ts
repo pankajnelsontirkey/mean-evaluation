@@ -93,8 +93,6 @@ export class AuthService {
     if (!localUser) {
       return;
     } else {
-      console.log(localUser);
-
       const { loginToken } = localUser;
       try {
         this.http
