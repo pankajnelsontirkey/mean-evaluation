@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +11,18 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
   currentUserName: string = '';
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authService.currentUserChanged.subscribe(currentUser => {
+      if (currentUser) {
+        this.currentUserName = currentUser.email;
+        this.isLoggedIn = true;
+      }
+    });
+  }
+
+  onLogout() {
+    this.authService.logout();
+  }
 }

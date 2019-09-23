@@ -130,12 +130,24 @@
       </div>
     </div>
 
+    <!-- REGISTER Button -->
     <div class="row">
       <div
         class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3"
       >
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" [disabled]="!isFormValid">
           Register
+        </button>
+      </div>
+    </div>
+
+    <!-- Switch to LOGIN Button -->
+    <div class="row">
+      <div
+        class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3"
+      >
+        <button type="submit" class="btn btn-primary" (click)="goToLogin()">
+          Already registered? Proceed to login
         </button>
       </div>
     </div>

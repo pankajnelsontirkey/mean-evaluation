@@ -1,8 +1,7 @@
 <header>
   <!-- <div class="container"> -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top ">
-    <!-- <a class="navbar-brand" (click)="redirectToHome()">EMP</a> -->
-    <h3>FileSharing</h3>
+    <a class="navbar-brand" routerLink="/dashboard">FileSharing</a>
     <button
       class="navbar-toggler d-lg-none"
       type="button"
@@ -19,12 +18,8 @@
       id="menu-items"
     >
       <ul class="nav navbar-nav ml-auto">
-        <li>
-          Login
-        </li>
-        <li>Logout</li>
-        <!-- <li *ngIf="isLoggedIn">{{ currentUserName }} &nbsp;</li>
-        <li *ngIf="isLoggedIn" (click)="onLogout()" id="logout">Logout</li> -->
+        <li *ngIf="isLoggedIn">{{ currentUserName }} &nbsp;</li>
+        <li *ngIf="isLoggedIn" (click)="onLogout()" id="logout">Logout</li>
       </ul>
     </div>
   </nav>

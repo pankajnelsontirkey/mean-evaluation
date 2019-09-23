@@ -1,7 +1,8 @@
-export interface IUser {
-  id: string;
-  role: string;
-  token?: string;
+export interface ICurrentUser {
+  userId: string;
+  loginToken: string;
+  role?: string;
+  email?: string;
 }
 
 export interface ILogin {

@@ -19,10 +19,10 @@ class Mailer {
   setOptions(options) {
     const newText = this.options.text
       .replace('__email__', options.email)
-      .replace('__link__', `${verificationLink}/${options.token}`);
+      .replace('__link__', `${verificationLink}/${options.emailToken}`);
     const newHtml = this.options.html
       .replace('__email__', options.email)
-      .replace('__link__', `${verificationLink}/${options.token}`);
+      .replace('__link__', `${verificationLink}/${options.emailToken}`);
 
     this.options = {
       ...this.options,

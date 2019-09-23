@@ -1,23 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { AuthService } from '../auth.service';
-import { ILogin } from 'src/app/shared/interfaces/userInterface';
+import { ILogin } from '../../shared/interfaces/userInterface';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   isFormValid = false;
-  constructor(private authService: AuthService) {}
+  loginMode = true;
+  formValidSubscription: Subscription;
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.initForm();
-    this.loginForm.statusChanges.subscribe(status => {
-      this.isFormValid = status;
+    this.authService.autoLogin();
+    this.authService.currentUserChanged.subscribe(currentUser => {
+      if (currentUser) {
+        this.router.navigate(['/user']);
+      }
     });
+
+    this.initForm();
+    this.formValidSubscription = this.loginForm.statusChanges.subscribe(
+      status => {
+        status === 'VALID'
+          ? (this.isFormValid = true)
+          : (this.isFormValid = false);
+      }
+    );
   }
 
   initForm() {
@@ -39,5 +56,13 @@ export class LoginComponent implements OnInit {
       };
       this.authService.login(loginObject);
     }
+  }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+
+  ngOnDestroy() {
+    this.formValidSubscription.unsubscribe();
   }
 }

@@ -1,12 +1,13 @@
-// import userModel from '../models/userSchema';
+import userModel from '../models/userSchema';
 
 const usersController = {
-  /* Add users to db */
-  addUser: (req, res) => {},
   /* Get users from db */
   getUsers: (req, res) => {},
+
   /* Get user by id */
   getUserById: (req, res) => {}
+
+  /* DELETE a user */
 };
 
 export default usersController;

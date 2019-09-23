@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { AuthService } from '../auth.service';
 import { IRegister } from '../../shared/interfaces/userInterface';
 
@@ -8,15 +11,24 @@ import { IRegister } from '../../shared/interfaces/userInterface';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
   error: boolean = null;
   errorDetails: {};
+  isFormValid = false;
+  formValidSubscription: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.initForm();
+    this.formValidSubscription = this.registrationForm.statusChanges.subscribe(
+      status => {
+        status === 'VALID'
+          ? (this.isFormValid = true)
+          : (this.isFormValid = false);
+      }
+    );
   }
 
   initForm() {
@@ -45,5 +57,13 @@ export class RegisterComponent implements OnInit {
       password: this.registrationForm.value.password
     };
     this.authService.register(registerObject);
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy() {
+    this.formValidSubscription.unsubscribe();
   }
 }

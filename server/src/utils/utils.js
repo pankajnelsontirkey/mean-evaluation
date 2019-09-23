@@ -16,7 +16,6 @@ const utils = {
 
   /* Method to verify a token */
   checkEmailToken: token => {
-    console.log(token);
     const decoded = jwt.verify(token, process.env.SECRET);
     if (!decoded && !decoded.email) {
       const err = { name: 'badToken', errMsg: 'Bad token received.' };
@@ -30,10 +29,9 @@ const utils = {
     jwt.sign({ _id: userId, role: userRole }, process.env.SECRET),
 
   /* Method to check if login token is valid */
-  checkLoginToken: async userToken => {
+  checkLoginToken: userToken => {
     const decodedUser = jwt.verify(userToken, process.env.SECRET);
-
-    /* return boolean */
+    return decodedUser;
   },
 
   bcryptGenerateHash: async password => {
