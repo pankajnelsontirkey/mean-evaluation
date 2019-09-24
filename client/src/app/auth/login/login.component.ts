@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.autoLogin();
     this.authService.currentUserChanged.subscribe(currentUser => {
       if (currentUser) {
-        this.router.navigate(['/user']);
+        this.authService.findHomePage();
       }
     });
 
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   goToRegister() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/auth/register']);
   }
 
   ngOnDestroy() {

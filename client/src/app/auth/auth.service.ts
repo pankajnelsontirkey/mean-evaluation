@@ -8,7 +8,9 @@ import {
 import { BehaviorSubject } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { IResponseLogin } from '../shared/interfaces/apiResponseInterface';
+import { IResponse } from '../shared/interfaces/responseInterface';
+import { Router } from '@angular/router';
+import { LoginComponent } from './login/login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +20,22 @@ export class AuthService {
 
   isLoggedIn: boolean = false;
   currentUser: ICurrentUser = null;
-  currentUserChanged = new BehaviorSubject<ICurrentUser>(null);
+  currentUserChanged = new BehaviorSubject<ICurrentUser>(this.currentUser);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   register(registerData: IRegister) {
     /* Make http request to backend */
     try {
       this.http
-        .post(`${this.serverUrl}/register`, registerData)
-        .subscribe(res => {
-          console.log(res);
+        .post<IResponse>(`${this.serverUrl}/register`, registerData)
+        .subscribe(response => {
+          if (!response.success) {
+            console.log(response.error);
+          } else {
+            console.log(response.message);
+            this.findHomePage();
+          }
         });
     } catch (e) {
       console.log(e);
@@ -39,21 +46,83 @@ export class AuthService {
     /* Maket http request to backend */
     try {
       this.http
-        .post<IResponseLogin>(`${this.serverUrl}/login`, loginData)
-        .subscribe(res => {
-          if (res.error) {
-            console.log(res.error);
+        .post<IResponse>(`${this.serverUrl}/login`, loginData)
+        .subscribe(response => {
+          if (!response.success) {
+            console.log(response.error);
           } else {
             const userData: ICurrentUser = {
-              userId: res.body.userId,
-              loginToken: res.body.loginToken,
-              role: res.body.role
+              userId: response.body.userId,
+              loginToken: response.body.loginToken,
+              role: response.body.role
             };
             this.handleLogin(userData);
           }
         });
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  logout() {
+    if (this.currentUser && this.currentUser.loginToken) {
+      try {
+        this.http
+          .get<IResponse>(
+            `${this.serverUrl}/logout/${this.currentUser.loginToken}`
+          )
+          .subscribe(response => {
+            if (response.success) {
+              console.log(response.message);
+              this.currentUser = null;
+              this.currentUserChanged.next(null);
+              localStorage.removeItem('login');
+              this.router.navigate(['']);
+            } else {
+              console.log(response.error);
+              this.router.navigate(['']);
+              throw Error(response.error);
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    this.router.navigate(['']);
+  }
+
+  autoLogin() {
+    const localUser = JSON.parse(localStorage.getItem('login'));
+    if (!localUser) {
+      return;
+    } else {
+      this.currentUser = { ...localUser };
+
+      this.currentUserChanged.next({ ...this.currentUser });
+      if (!this.currentUser.loginToken) {
+        console.log(`No login token was found.`);
+        throw Error('No login token was found.');
+      } else {
+        try {
+          this.http
+            .get<IResponse>(
+              `${this.serverUrl}/login/${this.currentUser.loginToken}`
+            )
+            .subscribe(response => {
+              if (response.error) {
+                console.log(response.error);
+                this.router.navigate(['/login']);
+              } else {
+                const { body } = { ...response };
+                this.currentUser = { ...body };
+                this.currentUserChanged.next({ ...this.currentUser });
+                this.findHomePage();
+              }
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      }
     }
   }
 
@@ -70,40 +139,27 @@ export class AuthService {
     this.currentUser = currUser;
     this.currentUserChanged.next({ ...this.currentUser });
 
+    /* Navigate to dashboard */
+    this.router.navigate([`/${this.currentUser.role}`]);
+
     /* Save current user to local storage */
-    localStorage.setItem('user', JSON.stringify(localUser));
+    localStorage.setItem('login', JSON.stringify(localUser));
   }
 
-  logout() {
-    try {
-      this.http
-        .get(`${this.serverUrl}/logout/${this.currentUser.userId}`)
-        .subscribe(response => {
-          console.log(response);
-        });
-      this.currentUser = null;
-      this.currentUserChanged.next(null);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  autoLogin() {
-    const localUser = JSON.parse(localStorage.getItem('user'));
-    if (!localUser) {
-      return;
-    } else {
-      const { loginToken } = localUser;
-      try {
-        this.http
-          .get<ICurrentUser>(`${this.serverUrl}/login/${loginToken}`)
-          .subscribe(response => {
-            this.currentUser = { ...response };
-            this.currentUserChanged.next({ ...this.currentUser });
-          });
-      } catch (e) {
-        console.log(e);
+  findHomePage() {
+    if (this.currentUser && this.currentUser.role) {
+      switch (this.currentUser.role) {
+        case 'user':
+          this.router.navigate(['/user']);
+          break;
+        case 'admin':
+          this.router.navigate(['/admin']);
+          break;
+        default:
+          this.router.navigate(['/']);
+          break;
       }
     }
+    this.router.navigate(['/']);
   }
 }

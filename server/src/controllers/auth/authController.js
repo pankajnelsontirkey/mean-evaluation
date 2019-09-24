@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable new-cap */
 
-import responseHandler from '../utils/responseHandler';
-import userModel from '../models/userSchema';
-import utils from '../utils/utils';
-import Mailer from '../utils/nodemailer';
+import responseHandler from '../../utils/responseHandler';
+import userModel from '../../models/userSchema';
+import utils from '../../utils/utils';
+import Mailer from '../../utils/nodemailer';
 
 const authController = {
   /**
@@ -177,9 +177,10 @@ const authController = {
    */
   login: async (req, res) => {
     try {
-      await userModel.findOne({ email: req.body.email }, async (err, user) => {
-        try {
-          /* Handle error from mongodb server */
+      await userModel.findOne(
+        { email: req.body.email },
+        { _id: 1, emailVerified: 1, password: 1, role: 1, email: 1 },
+        async (err, user) => {
           if (err) {
             responseHandler(res, 500, err, 'Server Error', null);
             throw Error(err);
@@ -188,7 +189,6 @@ const authController = {
             responseHandler(res, 404, null, 'Email not found', null);
             throw Error({ name: 'mailNotFound', errMsg: 'Email Not found' });
           } else if (!user.emailVerified) {
-            /* use model instance method to check password */
             responseHandler(
               res,
               401,
@@ -252,19 +252,27 @@ const authController = {
                         { isLoggedIn: true, loginToken },
                         (updateErr, updateRes) => {
                           if (updateErr) {
+                            responseHandler(res, 500, updateErr, '', null);
                             throw Error(updateErr);
+                          } else {
+                            responseHandler(
+                              res,
+                              200,
+                              null,
+                              'Logged in successfully',
+                              {
+                                userId: user._id,
+                                loginToken,
+                                role: user.role,
+                                email: user.email
+                              }
+                            );
                           }
-                          responseHandler(res, 500, updateErr, '', null);
                         }
                       );
                     } catch (e) {
                       throw Error(e);
                     }
-                    responseHandler(res, 200, null, 'Logged in successfully', {
-                      userId: user._id,
-                      loginToken,
-                      email: user.email
-                    });
                   }
                 } catch (e) {
                   throw Error(e);
@@ -274,59 +282,6 @@ const authController = {
               throw Error(e);
             }
           }
-        } catch (e) {
-          console.log(e);
-        }
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  },
-
-  getLoginByUserId: async (req, res) => {
-    const { loginToken } = req.params;
-    const { _id } = utils.checkLoginToken(loginToken);
-
-    try {
-      await userModel.findOne(
-        { _id },
-        { _id: 1, loginToken: 1, role: 1, email: 1 },
-        (err, doc) => {
-          if (err) {
-            responseHandler(res, 500, err, 'Server Error', null);
-            throw Error(err);
-          } else if (!doc) {
-            responseHandler(res, 404, null, 'User not found', null);
-            throw Error({
-              name: 'noUserExists',
-              errMsg: 'User does not exist'
-            });
-          } else if (!doc.loginToken) {
-            responseHandler(res, 404, null, 'User token not found', null);
-            throw Error({
-              name: 'noTokenFound',
-              errMsg: 'Token not found'
-            });
-          } else if (loginToken !== doc.loginToken) {
-            responseHandler(
-              res,
-              401,
-              { name: 'tokenMismatch', errMsg: 'Login token is invalid' },
-              'User found, but token invalid',
-              null
-            );
-            throw Error({
-              name: 'tokenMismatch',
-              errMsg: 'Login token is invalid'
-            });
-          } else {
-            responseHandler(res, 200, null, 'User found, sending role', {
-              userId: doc._id,
-              loginToken: doc.loginToken,
-              role: doc.role,
-              email: doc.email
-            });
-          }
         }
       );
     } catch (e) {
@@ -334,11 +289,102 @@ const authController = {
     }
   },
 
+  getAutoLoginData: async (req, res) => {
+    try {
+      const { loginToken } = req.params;
+      const { _id } = utils.checkLoginToken(loginToken);
+
+      try {
+        await userModel.findById(
+          _id,
+          { _id: 1, loginToken: 1, role: 1, email: 1, isLoggedIn: 1 },
+          (err, user) => {
+            if (err) {
+              responseHandler(res, 500, err, 'Server Error', null);
+              throw Error(err);
+            } else if (!user) {
+              responseHandler(
+                res,
+                404,
+                {
+                  name: 'noUserFound',
+                  errMsg: 'User does not exist'
+                },
+                'User not found',
+                null
+              );
+              throw Error({
+                name: 'noUserFound',
+                errMsg: 'User does not exist'
+              });
+            } else if (!user.isLoggedIn) {
+              responseHandler(
+                res,
+                404,
+                {
+                  name: 'isLoggedOut',
+                  errMsg: 'This user has been logged out.'
+                },
+                '',
+                null
+              );
+
+              throw Error({
+                name: 'isLoggedOut',
+                errMsg: 'This user has been logged out.'
+              });
+            } else if (!user.loginToken) {
+              responseHandler(
+                res,
+                404,
+                {
+                  name: 'noTokenFound',
+                  errMsg: 'Token not found'
+                },
+                'User token not found',
+                null
+              );
+              throw Error({
+                name: 'noTokenFound',
+                errMsg: 'Token not found'
+              });
+            } else if (loginToken !== user.loginToken) {
+              responseHandler(
+                res,
+                401,
+                { name: 'tokenMismatch', errMsg: 'Login token is invalid' },
+                'User found, but token invalid',
+                null
+              );
+              throw Error({
+                name: 'tokenMismatch',
+                errMsg: 'Login token is invalid'
+              });
+            } else {
+              responseHandler(res, 200, null, 'User found.', {
+                userId: user._id,
+                loginToken: user.loginToken,
+                role: user.role,
+                email: user.email
+              });
+            }
+          }
+        );
+      } catch (e) {
+        console.log({ ...e });
+        throw Error(e);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
   logout: async (req, res) => {
-    const { id } = req.params;
+    const { loginToken } = req.params;
+    const { _id } = utils.checkLoginToken(loginToken);
     try {
       await userModel.findOne(
-        { _id: id },
+        { _id },
         { isLoggedIn: 1, loginToken: 1 },
         async (err, user) => {
           if (err) {
@@ -373,7 +419,8 @@ const authController = {
               name: 'badRequest',
               errMsg: 'Not logged in.'
             });
-          } else {
+          }
+          try {
             await userModel.update(
               { _id: user._id },
               { isLoggedIn: false, loginToken: null },
@@ -398,6 +445,8 @@ const authController = {
                 }
               }
             );
+          } catch (e) {
+            throw Error(e);
           }
         }
       );

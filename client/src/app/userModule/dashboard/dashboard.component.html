@@ -1,2 +1,34 @@
-<p>dashboard works!</p>
+<p>user dashboard works!</p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-lg-6">
+      Profile Info Box goes here
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-xs-12 col-md-2 col-lg-4">
+      <a routerLink="/user/friends" class="btn btn-primary">
+        Friends
+      </a>
+    </div>
+    <div class="col-xs-12 col-md-10 col-lg-8">
+      friends list goes here
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-xs-12 col-md-2 col-lg-4">
+      <a routerLink="/user/files" class="btn btn-primary">
+        Files
+      </a>
+    </div>
+    <div class="col-xs-12 col-md-10 col-lg-8">
+      file list goes here
+    </div>
+  </div>
+  <br />
+</div>
+
 <router-outlet></router-outlet>

@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   ngOnDestroy() {

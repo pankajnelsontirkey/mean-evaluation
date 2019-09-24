@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard } from './auth/auth.guard';
+import { AdminGuard } from './auth/admin.guard';
+import { NotFoundComponent } from './sharedModule/not-found/not-found.component';
+
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   {
@@ -10,13 +14,16 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () =>
-      import('./adminModule/admin.module').then(m => m.AdminModule)
+      import('./adminModule/admin.module').then(m => m.AdminModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'user',
     loadChildren: () =>
-      import('./userModule/user.module').then(m => m.UserModule)
-  }
+      import('./userModule/user.module').then(m => m.UserModule),
+    canActivate: [AuthGuard]
+  },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

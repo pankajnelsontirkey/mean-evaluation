@@ -11,8 +11,10 @@ import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
 
-@Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate, CanActivateChild {
+@Injectable({
+  providedIn: 'root'
+})
+export class UserGuard implements CanActivate, CanActivateChild {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
@@ -24,6 +26,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | boolean
     | UrlTree {
     if (!this.authService.currentUser) {
+      return this.router.createUrlTree(['']);
+    } else if (
+      this.authService.currentUser &&
+      (!this.authService.currentUser.role ||
+        this.authService.currentUser.role !== 'user')
+    ) {
       return this.router.createUrlTree(['']);
     }
     return true;
@@ -37,6 +45,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | boolean
     | UrlTree {
     if (!this.authService.currentUser) {
+      return this.router.createUrlTree(['']);
+    } else if (
+      this.authService.currentUser &&
+      (!this.authService.currentUser.role ||
+        this.authService.currentUser.role !== 'user')
+    ) {
       return this.router.createUrlTree(['']);
     }
     return true;

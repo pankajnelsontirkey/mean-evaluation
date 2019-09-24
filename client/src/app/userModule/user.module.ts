@@ -7,12 +7,14 @@ import { FileManagerModule } from './fileManagerModule/file-manager.module';
 import { FileSharingModule } from './fileSharingModule/file-sharing.module';
 import { FriendManagerModule } from './friendManagerModule/friend-manager.module';
 import { UserRoutingModule } from './user-routing.module';
+import { SharedModule } from '../sharedModule/shared.module';
 
 @NgModule({
   declarations: [DashboardComponent],
   imports: [
     CommonModule,
     RouterModule,
+    SharedModule,
     UserRoutingModule,
     FileManagerModule,
     FileSharingModule,
