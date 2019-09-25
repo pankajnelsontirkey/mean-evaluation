@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  ILogin,
-  IRegister,
-  ICurrentUser
-} from '../shared/interfaces/userInterface';
+import { ILogin, IRegister, ICurrentUser } from '../shared/interfaces/userInterface';
 import { BehaviorSubject } from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -27,16 +23,14 @@ export class AuthService {
   register(registerData: IRegister) {
     /* Make http request to backend */
     try {
-      this.http
-        .post<IResponse>(`${this.serverUrl}/register`, registerData)
-        .subscribe(response => {
-          if (!response.success) {
-            console.log(response.error);
-          } else {
-            console.log(response.message);
-            this.findHomePage();
-          }
-        });
+      this.http.post<IResponse>(`${this.serverUrl}/register`, registerData).subscribe(response => {
+        if (!response.success) {
+          console.log(response.error);
+        } else {
+          console.log(response.message);
+          this.findHomePage();
+        }
+      });
     } catch (e) {
       console.log(e);
     }
@@ -45,20 +39,18 @@ export class AuthService {
   login(loginData: ILogin) {
     /* Maket http request to backend */
     try {
-      this.http
-        .post<IResponse>(`${this.serverUrl}/login`, loginData)
-        .subscribe(response => {
-          if (!response.success) {
-            console.log(response.error);
-          } else {
-            const userData: ICurrentUser = {
-              userId: response.body.userId,
-              loginToken: response.body.loginToken,
-              role: response.body.role
-            };
-            this.handleLogin(userData);
-          }
-        });
+      this.http.post<IResponse>(`${this.serverUrl}/login`, loginData).subscribe(response => {
+        if (!response.success) {
+          console.log(response.error);
+        } else {
+          const userData: ICurrentUser = {
+            userId: response.body.userId,
+            loginToken: response.body.loginToken,
+            role: response.body.role
+          };
+          this.handleLogin(userData);
+        }
+      });
     } catch (e) {
       console.log(e);
     }
@@ -68,9 +60,7 @@ export class AuthService {
     if (this.currentUser && this.currentUser.loginToken) {
       try {
         this.http
-          .get<IResponse>(
-            `${this.serverUrl}/logout/${this.currentUser.loginToken}`
-          )
+          .get<IResponse>(`${this.serverUrl}/logout/${this.currentUser.loginToken}`)
           .subscribe(response => {
             if (response.success) {
               console.log(response.message);
@@ -105,9 +95,7 @@ export class AuthService {
       } else {
         try {
           this.http
-            .get<IResponse>(
-              `${this.serverUrl}/login/${this.currentUser.loginToken}`
-            )
+            .get<IResponse>(`${this.serverUrl}/login/${this.currentUser.loginToken}`)
             .subscribe(response => {
               if (response.error) {
                 console.log(response.error);

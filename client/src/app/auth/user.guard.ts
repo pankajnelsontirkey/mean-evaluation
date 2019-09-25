@@ -20,17 +20,12 @@ export class UserGuard implements CanActivate, CanActivateChild {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (!this.authService.currentUser) {
       return this.router.createUrlTree(['']);
     } else if (
       this.authService.currentUser &&
-      (!this.authService.currentUser.role ||
-        this.authService.currentUser.role !== 'user')
+      (!this.authService.currentUser.role || this.authService.currentUser.role !== 'user')
     ) {
       return this.router.createUrlTree(['']);
     }
@@ -39,17 +34,12 @@ export class UserGuard implements CanActivate, CanActivateChild {
   canActivateChild(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     if (!this.authService.currentUser) {
       return this.router.createUrlTree(['']);
     } else if (
       this.authService.currentUser &&
-      (!this.authService.currentUser.role ||
-        this.authService.currentUser.role !== 'user')
+      (!this.authService.currentUser.role || this.authService.currentUser.role !== 'user')
     ) {
       return this.router.createUrlTree(['']);
     }
