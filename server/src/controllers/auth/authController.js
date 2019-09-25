@@ -295,9 +295,9 @@ const authController = {
       const { _id } = utils.checkLoginToken(loginToken);
 
       try {
-        await userModel.findById(
-          _id,
-          { _id: 1, loginToken: 1, role: 1, email: 1, isLoggedIn: 1 },
+        await userModel.One(
+          { _id },
+          { loginToken: 1, role: 1, email: 1, isLoggedIn: 1 },
           (err, user) => {
             if (err) {
               responseHandler(res, 500, err, 'Server Error', null);
