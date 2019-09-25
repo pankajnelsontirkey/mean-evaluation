@@ -421,7 +421,7 @@ const authController = {
             });
           }
           try {
-            await userModel.update(
+            await userModel.updateOne(
               { _id: user._id },
               { isLoggedIn: false, loginToken: null },
               (updateErr, updatedUser) => {

@@ -3,19 +3,19 @@ import * as mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const requestSchema = new Schema({
-  sender: new Schema({
+  from: new Schema({
     id: { type: String },
     email: { type: String }
   }),
-  receiver: new Schema({
+  to: new Schema({
     id: { type: String },
     email: { type: String }
   }),
-  body: new Schema({
-    title: { type: String },
+  data: new Schema({
+    // title: { type: String },
     /* type: send/received */
     type: { type: String },
-    message: { type: String }
+    body: { type: String }
   })
 });
 
