@@ -6,7 +6,7 @@
     "node": true
   },
   "parser": "babel-eslint",
-  "extends": ["prettier", "plugin:node/recommended", "airbnb-base", "prettier"],
+  "extends": ["plugin:node/recommended", "airbnb-base", "prettier"],
   "plugins": ["prettier"],
   /* "globals": {
     "Atomics": "readonly",

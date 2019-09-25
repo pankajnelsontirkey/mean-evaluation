@@ -16,10 +16,11 @@ const authController = {
       const userObj = { ...req.body, password: passwordHash };
       let resMsg = '';
 
-      userModel.create(userObj, async (err, userItem) => {
+      await userModel.create(userObj, async (err, userItem) => {
         if (err || !userItem) {
           resMsg += 'Registration failed';
           responseHandler(res, 500, err, resMsg, null);
+          throw Error(err);
         } else {
           let emailToken = '';
           try {
@@ -32,7 +33,7 @@ const authController = {
           }
 
           try {
-            userModel.updateOne(
+            await userModel.updateOne(
               { _id: userItem._id },
               { emailToken },
               (updateErr, updateRes) => {

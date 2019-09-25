@@ -18,7 +18,7 @@ const userSchema = new Schema({
   isLoggedIn: { type: Boolean, default: false },
   loginToken: { type: String, default: null },
   passwordResetToken: { type: String, default: null },
-  passwordResetExpires: { type: Date, default: null },
+  passwordResetExpires: { type: Date, default: null },s
   notifications: [notificationSchema],
   requests: [requestSchema],
   friends: [friendSchema]
