@@ -16,4 +16,5 @@ export interface IRegister {
   email: string;
   password: string;
   cpassword?: string;
+  avatar?: any;
 }

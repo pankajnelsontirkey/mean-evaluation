@@ -68,7 +68,7 @@ const friendsControllers = {
                 console.log(`Error1: ${{ ...err1 }}`);
                 throw Error({ ...err1 });
               } else {
-                console.log(`Doc1: ${{ ...doc1 }}`);
+                console.log(`Doc1: ${doc1}`);
               }
             });
           } catch (e) {
@@ -90,7 +90,7 @@ const friendsControllers = {
                 console.log(`Error2: ${{ ...err2 }}`);
                 throw Error({ ...err2 });
               } else {
-                console.log(`Doc2: ${{ ...doc2 }}`);
+                console.log(`Doc2: ${doc2}`);
               }
             });
           } catch (e) {
@@ -117,50 +117,45 @@ const friendsControllers = {
     query = { _id: userId };
     projection = { _id: 0, friends: 1 };
     try {
-      await userModel.find(query, projection, (err, doc) => {
-        if (err) {
-          responseHandler(res, 500, err, 'Server error occurred', null);
-          throw Error(err);
-        } else if (!doc) {
-          responseHandler(
-            res,
-            404,
-            {
-              name: 'userNotFound',
-              errMsg: 'User Not Found'
-            },
-            'The user was not found',
-            null
-          );
-          throw Error({
-            name: 'userNotFound',
-            errMsg: 'User Not Found'
-          });
-        } else {
-          const { friends } = doc[0];
-          if (!friends.length) {
+      await userModel.findOne(query, projection, (err, doc) => {
+        try {
+          if (err) {
+            responseHandler(res, 500, err, 'Server error occurred', null);
+            throw Error(err);
+          } else if (!doc) {
             responseHandler(
               res,
-              204,
-              {
-                name: 'noFriendsFound',
-                errMsg: 'No friends were found'
-              },
-              'The user has no friends',
-              []
+              404,
+              { name: 'userNotFound', errMsg: 'User Not Found' },
+              'The user was not found',
+              null
             );
-            console.log({
-              name: 'noFriendsFound',
-              errMsg: 'No friends were found'
-            });
+            throw Error({ name: 'userNotFound', errMsg: 'User Not Found' });
           } else {
-            console.log(...friends);
-            responseHandler(res, 200, null, 'Friends found', { friends });
+            const { friends } = doc;
+            if (!friends.length) {
+              responseHandler(
+                res,
+                204,
+                { name: 'noFriendsFound', errMsg: 'No friends were found' },
+                'The user has no friends',
+                []
+              );
+              throw Error({
+                name: 'noFriendsFound',
+                errMsg: 'Friends were found'
+              });
+            } else {
+              responseHandler(res, 200, null, 'Friends found', { friends });
+            }
           }
+        } catch (e) {
+          console.log(`error: ${e.name}\nmessage: ${e.message}`);
         }
       });
     } catch (e) {
-      console.log(e);
+      // responseHandler(res, 500, e, 'Server Error Occurred', null);
+      console.log(`error: ${e.name}\nmessage: ${e.message}`);
     }
   }
 
