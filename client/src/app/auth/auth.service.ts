@@ -10,7 +10,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IResponse } from '../shared/interfaces/responseInterface';
 import { Router } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 
 @Injectable({
   providedIn: 'root'

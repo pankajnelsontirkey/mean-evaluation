@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { faShareSquare } from '@fortawesome/free-regular-svg-icons';
+import {} from '@fortawesome/free-brands-svg-icons';
+
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -9,6 +12,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  icons = { faShareSquare };
   collapsed: boolean = true;
   isLoggedIn: boolean = false;
   currentUserName: string = '';

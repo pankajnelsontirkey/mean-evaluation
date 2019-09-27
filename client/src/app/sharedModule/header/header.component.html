@@ -1,9 +1,15 @@
 <header>
   <!-- <div class="container"> -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top ">
-    <span class="navbar-brand" id="home" (click)="onRedirectToHome()"
-      >FileSharing</span
+    <span
+      title="MySharesApp"
+      class="navbar-brand"
+      id="home"
+      (click)="onRedirectToHome()"
     >
+      MySharesApp
+      <fa-icon id="brand" [icon]="icons.faShareSquare"></fa-icon>
+    </span>
 
     <button
       class="navbar-toggler d-lg-none"

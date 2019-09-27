@@ -21,9 +21,9 @@ const userSchema = new Schema(
     loginToken: { type: String, default: null },
     passwordResetToken: { type: String, default: null },
     passwordResetExpires: { type: Date, default: null },
-    notifications: [notificationSchema],
-    requests: [requestSchema],
     friends: [friendSchema],
+    requests: [requestSchema],
+    notifications: [notificationSchema],
     files: [{ type: Buffer }]
   },
   { timestamps: true }

@@ -12,9 +12,7 @@ const requestSchema = new Schema({
     required: true
   },
   type: { type: String, required: true },
-  data: {
-    type: { message: { type: String } }
-  }
+  data: { type: { message: String, files: [mongoose.Types.ObjectId] } }
 });
 
 export default requestSchema;
