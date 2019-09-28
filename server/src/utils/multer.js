@@ -18,7 +18,7 @@ export const avatarUploader = new Multer({
   }
 });
 
-export const fileUploader = new Multer({
+export const docUploader = new Multer({
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(doc|docx|pdf)$/)) {
       return cb(new Error('Please upload a doc, docx or pdf file.'));
@@ -27,5 +27,23 @@ export const fileUploader = new Multer({
     // cb(new Error('File must be a pdf'));
     // cb(undefined, true);
     // cb(undefined, false);
+  }
+});
+
+export const imageUploader = new Multer({
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(png|jpeg|jpg)$/)) {
+      return cb(new Error('Please upload a supported image (png/jpg/jpeg)'));
+    }
+    return cb(undefined, true);
+  }
+});
+
+export const videoUploader = new Multer({
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(mp4|html5)$/)) {
+      return cb(new Error('Please upload a supported image (png/jpg/jpeg)'));
+    }
+    return cb(undefined, true);
   }
 });

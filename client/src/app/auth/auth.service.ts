@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  serverUrl: string = environment.serverUri;
+  serverUrl: string = environment.serverUrl;
 
   isLoggedIn: boolean = false;
   currentUser: ICurrentUser = null;
@@ -52,9 +52,9 @@ export class AuthService {
             console.log(response.error);
           } else {
             const userData: ICurrentUser = {
-              userId: response.body.userId,
-              loginToken: response.body.loginToken,
-              role: response.body.role
+              userId: response.data.userId,
+              loginToken: response.data.loginToken,
+              role: response.data.role
             };
             this.handleLogin(userData);
           }
@@ -112,8 +112,8 @@ export class AuthService {
 
                 throw Error(response.error);
               } else {
-                const { body } = { ...response };
-                this.currentUser = { ...body };
+                const { data } = { ...response };
+                this.currentUser = { ...data };
                 this.currentUserChanged.next({ ...this.currentUser });
                 this.findHomePage();
               }

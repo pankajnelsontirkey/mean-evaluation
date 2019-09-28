@@ -8,7 +8,8 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { request } from 'https';
+
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +24,22 @@ export class DataService {
          * Make http request to 'api/v1/users/' GET
          * Takes no body
          */
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}/users`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       case 'search':
         /**
          * Make http request to 'api/v1/users/search/:searchText' GET
          * Takes the searchText as param
          */
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       default:
         /* Return/Dont make a request */

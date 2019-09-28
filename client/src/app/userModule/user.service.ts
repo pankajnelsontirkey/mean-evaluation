@@ -19,6 +19,6 @@ export class UserService {
   }
 
   getFriendsList() {
-    this.dataService.friends();
+    this.dataService.friends('fetch');
   }
 }

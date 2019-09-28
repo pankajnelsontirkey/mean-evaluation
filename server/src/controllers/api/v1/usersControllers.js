@@ -8,7 +8,13 @@ import userModel from '../../../models/userSchema';
 import responseHandler from '../../../utils/responseHandler';
 
 let query = {};
-const projection = { _id: 0, email: 1, firstName: 1, lastName: 1, avatar: 1 };
+const projection = {
+  /* _id: 0, */
+  email: 1,
+  firstName: 1,
+  lastName: 1
+  /* , avatar: 1 */
+};
 
 const usersController = {
   /* GET all users registered on platform */
@@ -22,10 +28,7 @@ const usersController = {
           responseHandler(
             res,
             404,
-            {
-              name: 'noUsers',
-              errMsg: 'No users in database'
-            },
+            { name: 'noUsers', errMsg: 'No users in database' },
             'No users found',
             null
           );

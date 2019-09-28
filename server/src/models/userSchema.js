@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import requestSchema from './requestSchema';
 import notificationSchema from './notificationSchema';
 import friendSchema from './friendSchema';
+import fileSchema from './fileSchema';
 
 const { Schema } = mongoose;
 
@@ -13,6 +14,7 @@ const userSchema = new Schema(
     lastName: { type: String, required: true },
     password: { type: String, required: true },
     // dob: { type: Date /* , required: true  */ },
+    // gender: { type: String },
     avatar: { type: Buffer },
     role: { type: String, default: 'user' },
     emailVerified: { type: Boolean, default: false },
@@ -24,7 +26,7 @@ const userSchema = new Schema(
     friends: [friendSchema],
     requests: [requestSchema],
     notifications: [notificationSchema],
-    files: [{ type: Buffer }]
+    files: [fileSchema]
   },
   { timestamps: true }
 );
