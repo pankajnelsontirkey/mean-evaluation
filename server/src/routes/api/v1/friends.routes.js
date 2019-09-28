@@ -10,11 +10,11 @@ import friendsController from '../../../controllers/api/v1/friendsController';
 
 const friendsRoutes = express.Router();
 
-/* ADD-FRIEND: make a friend connection between two users */
-friendsRoutes.post('/friends/add', friendsController.addFriend);
-
 /* GET-ALL-FRIENDS: fetch all friends of a user */
-friendsRoutes.get('/friends', friendsController.getAllFriends);
+friendsRoutes.get('/', friendsController.getAllFriends);
+
+/* ADD-FRIEND: make a friend connection between two users */
+friendsRoutes.post('/add', friendsController.addFriend);
 
 // /* DELETE: delete a user from current user's friends list */
 // friendsRoutes.delete('/friends/delete', friendsController.deleteFriend);

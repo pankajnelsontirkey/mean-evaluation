@@ -16,6 +16,7 @@ const DB_INIT = async () => {
   }
 
   mongoose.Promise = global.Promise;
+
   try {
     await mongoose.connect(DB_URI, { useNewUrlParser: true });
   } catch (e) {

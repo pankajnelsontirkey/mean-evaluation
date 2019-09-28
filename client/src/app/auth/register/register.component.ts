@@ -45,7 +45,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(20)
-      ])
+      ]),
+      profilePic: new FormControl(null, [Validators.required])
     });
   }
 
@@ -55,8 +56,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
       lastName: this.registrationForm.value.lastName,
       email: this.registrationForm.value.email,
       password: this.registrationForm.value.password
+      // profilePic: this.registrationForm.value.profilePic
     };
-    this.authService.register(registerObject);
+    console.log(registerObject);
+
+    // this.authService.register(registerObject);
   }
 
   goToLogin() {

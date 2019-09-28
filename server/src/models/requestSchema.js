@@ -3,20 +3,16 @@ import * as mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const requestSchema = new Schema({
-  from: new Schema({
-    id: { type: String },
-    email: { type: String }
-  }),
-  to: new Schema({
-    id: { type: String },
-    email: { type: String }
-  }),
-  data: new Schema({
-    // title: { type: String },
-    /* type: send/received */
-    type: { type: String },
-    body: { type: String }
-  })
+  from: {
+    type: { id: { type: mongoose.Types.ObjectId }, email: { type: String } },
+    required: true
+  },
+  to: {
+    type: { id: { type: mongoose.Types.ObjectId }, email: { type: String } },
+    required: true
+  },
+  type: { type: String, required: true },
+  data: { type: { message: String, files: [mongoose.Types.ObjectId] } }
 });
 
 export default requestSchema;

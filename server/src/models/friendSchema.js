@@ -3,8 +3,7 @@ import * as mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const friendSchema = new Schema({
-  id: { type: mongoose.Types.ObjectId, unique: true },
-  email: { type: String, unique: true },
+  email: { type: String },
   fullName: { type: String }
 });
 
