@@ -13,6 +13,6 @@ router.use('/users', checkAuthentication, usersRoutes);
 router.use('/friends', friendsRoutes);
 router.use('/requests', requestsRoutes);
 router.use('/notifications', notificationsRoutes);
-router.use('/uploads', uploadRoutes);
+router.use('/files', uploadRoutes);
 
 export default router;
