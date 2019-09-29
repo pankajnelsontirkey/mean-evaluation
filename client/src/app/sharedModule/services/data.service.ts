@@ -11,9 +11,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class DataService {
   constructor(private http: HttpClient) {}
 
@@ -24,22 +22,18 @@ export class DataService {
          * Make http request to 'api/v1/users/' GET
          * Takes no body
          */
-        this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}/users`)
-          .subscribe(response => {
-            console.log(response);
-          });
+        this.http.get(`${environment.serverUrl}${environment.apiUrl}/users`).subscribe(response => {
+          console.log(response);
+        });
         break;
       case 'search':
         /**
          * Make http request to 'api/v1/users/search/:searchText' GET
          * Takes the searchText as param
          */
-        this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}`)
-          .subscribe(response => {
-            console.log(response);
-          });
+        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
+          console.log(response);
+        });
         break;
       default:
         /* Return/Dont make a request */
@@ -54,12 +48,20 @@ export class DataService {
          * Make http request to 'api/v1/friends/ GET
          * Takes current userID in req.body
          */
+        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
+          console.log(response);
+        });
         break;
       case 'add':
-      /**
-       * Make http request to 'api/v1/friends/add' POST
-       * Takes fromUser, toUser in req.body
-       */
+        /**
+         * Make http request to 'api/v1/friends/add' POST
+         * Takes fromUser, toUser in req.body
+         */
+        this.http
+          .post(`${environment.serverUrl}${environment.apiUrl}`, {} /* , payload */)
+          .subscribe(response => {
+            console.log(response);
+          });
       default:
         /* Return/Don't make a request */
         break;
@@ -73,12 +75,20 @@ export class DataService {
          * Make http request to 'api/v1/requests/' GET
          * Takes userId in req.body
          */
+        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
+          console.log(response);
+        });
         break;
       case 'add':
         /**
          * Make http request to 'api/v1/requests/add' POST
          * Takes fromUser, toUser, type, data in req.body
          */
+        this.http
+          .post(`${environment.serverUrl}${environment.apiUrl}`, {} /* , payload */)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       default:
         /* Return/Don't make a request */
@@ -93,11 +103,20 @@ export class DataService {
          * Make http request to '/notifications'
          * Takes userId in req.body
          */
+        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
+          console.log(response);
+        });
         break;
       case 'add':
         /**
          * Make http request to '/notifications/add'
+         * Takes fromUser, toUser, type, data in req.body
          */
+        this.http
+          .post(`${environment.serverUrl}${environment.apiUrl}`, {} /* , payload */)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       default:
         break;
