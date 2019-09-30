@@ -16,7 +16,7 @@ router.use('/requests', requestsRoutes);
 router.use('/notifications', notificationsRoutes);
 router.use('/files', uploadRoutes);
 
-/* Testing */
+/* Testing route for multer/gridfs file uploads */
 router.use('/test', testRoutes);
 
 export default router;

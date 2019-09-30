@@ -15,10 +15,11 @@ const testHandler = async (req, res) => {
   readable.push(req.file.buffer);
   readable.push(null);
   try {
-    const conn = await mongoose.connect(
-      'mongodb+srv://dba:R7xSQB5Xsm1bh8JP@mean-evaluation-data-7bah4.mongodb.net',
-      { dbName: 'shareapp', useNewUrlParser: true, useUnifiedTopology: true }
-    );
+    const conn = await mongoose.connect(process.env.DB_CLOUD_URI, {
+      dbName: process.env.DB_NAME,
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
 
     try {
       const bucket = await mongoose.mongo.GridFSBucket(conn, {

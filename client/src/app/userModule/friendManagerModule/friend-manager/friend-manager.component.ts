@@ -11,6 +11,6 @@ export class FriendManagerComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.userService;
+    this.userService.getFriendsList;
   }
 }
