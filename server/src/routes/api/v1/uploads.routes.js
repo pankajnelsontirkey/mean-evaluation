@@ -15,16 +15,34 @@ uploadRoutes.post(
   avatarUploader.upload.single('avatar'),
   uploadsController.uploadAvatar,
   async (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
+    res.status(500).send({ error: error.message });
+  }
+);
+
+uploadRoutes.post(
+  '/documents',
+  docUploader.upload.single('document'),
+  uploadsController.uploadFiles,
+  (error, req, res, next) => {
+    res.status(500).send({ error: error.message });
   }
 );
 
 uploadRoutes.post(
   '/images',
-  imageUploader.upload.single('file'),
+  imageUploader.upload.single('image'),
   uploadsController.uploadFiles,
   (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
+    res.status(500).send({ error: error.message });
+  }
+);
+
+uploadRoutes.post(
+  '/videos',
+  videoUploader.upload.single('video'),
+  uploadsController.uploadFiles,
+  (error, req, res, next) => {
+    res.status(500).send({ error: error.message });
   }
 );
 

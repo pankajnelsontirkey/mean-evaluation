@@ -10,6 +10,7 @@ export const avatarUploader = new Multer({
   limits: {
     fileSize: 1000000
   },
+
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg)$/)) {
       return cb(new Error('Please upload an image'));

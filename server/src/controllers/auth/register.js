@@ -16,8 +16,8 @@ const register = async (req, res) => {
 
     const userObj = {
       ...req.body,
-      password: passwordHash,
-      avatar: req.file.buffer
+      password: passwordHash
+      // avatar: req.file.buffer
     };
 
     let resMsg = '';
