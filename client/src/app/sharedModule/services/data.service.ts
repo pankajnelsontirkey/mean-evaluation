@@ -22,18 +22,22 @@ export class DataService {
          * Make http request to 'api/v1/users/' GET
          * Takes no body
          */
-        this.http.get(`${environment.serverUrl}${environment.apiUrl}/users`).subscribe(response => {
-          console.log(response);
-        });
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}/users`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       case 'search':
         /**
          * Make http request to 'api/v1/users/search/:searchText' GET
          * Takes the searchText as param
          */
-        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
-          console.log(response);
-        });
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       default:
         /* Return/Dont make a request */
@@ -48,9 +52,11 @@ export class DataService {
          * Make http request to 'api/v1/friends/ GET
          * Takes current userID in req.body
          */
-        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
-          console.log(response);
-        });
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       case 'add':
         /**
@@ -58,7 +64,10 @@ export class DataService {
          * Takes fromUser, toUser in req.body
          */
         this.http
-          .post(`${environment.serverUrl}${environment.apiUrl}`, {} /* , payload */)
+          .post(
+            `${environment.serverUrl}${environment.apiUrl}`,
+            {} /* , payload */
+          )
           .subscribe(response => {
             console.log(response);
           });
@@ -75,9 +84,11 @@ export class DataService {
          * Make http request to 'api/v1/requests/' GET
          * Takes userId in req.body
          */
-        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
-          console.log(response);
-        });
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       case 'add':
         /**
@@ -85,7 +96,10 @@ export class DataService {
          * Takes fromUser, toUser, type, data in req.body
          */
         this.http
-          .post(`${environment.serverUrl}${environment.apiUrl}`, {} /* , payload */)
+          .post(
+            `${environment.serverUrl}${environment.apiUrl}`,
+            {} /* , payload */
+          )
           .subscribe(response => {
             console.log(response);
           });
@@ -103,9 +117,11 @@ export class DataService {
          * Make http request to '/notifications'
          * Takes userId in req.body
          */
-        this.http.get(`${environment.serverUrl}${environment.apiUrl}`).subscribe(response => {
-          console.log(response);
-        });
+        this.http
+          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .subscribe(response => {
+            console.log(response);
+          });
         break;
       case 'add':
         /**
@@ -113,7 +129,10 @@ export class DataService {
          * Takes fromUser, toUser, type, data in req.body
          */
         this.http
-          .post(`${environment.serverUrl}${environment.apiUrl}`, {} /* , payload */)
+          .post(
+            `${environment.serverUrl}${environment.apiUrl}`,
+            {} /* , payload */
+          )
           .subscribe(response => {
             console.log(response);
           });

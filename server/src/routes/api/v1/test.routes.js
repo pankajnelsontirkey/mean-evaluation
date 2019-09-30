@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import express from 'express';
-import { MongoClient, GridFSBucket } from 'mongodb';
+
 import * as mongoose from 'mongoose';
 import * as multer from 'multer';
 import { Readable } from 'stream';
@@ -15,22 +15,27 @@ const testHandler = async (req, res) => {
   readable.push(req.file.buffer);
   readable.push(null);
   try {
-    const conn = await mongoose.connect(process.env.DB_URL, {
-      dbName: process.env.DB_NAME,
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    mongoose
+      .createConnection(process.env.DB_URL, {
+        dbName: process.env.DB_NAME,
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
+      .then(conn => {
+        const bucket = new mongoose.mongo.GridFSBucket(conn.db, {
+          bucketName: 'files'
+        });
+        return bucket;
+      })
+      .then(bucket => {
+        console.log(readable);
 
-    try {
-      const bucket = await mongoose.mongo.GridFSBucket(conn, {
-        bucketName: 'files'
-      });
-
-      try {
         const uploadStream = bucket.openUploadStream(req.file.originalname);
-        readable.pipe(uploadStream);
+        const result = readable.pipe(uploadStream);
+        console.log(result);
 
-        uploadStream.on('error', () => {
+        res.send(`Testing`);
+        /* uploadStream.on('error', () => {
           return res.status(500).json({ message: 'Error uploading file.' });
         });
 
@@ -38,28 +43,13 @@ const testHandler = async (req, res) => {
           return res
             .status(201)
             .json({ message: 'File uploaded successfully.' });
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    } catch (e) {
-      console.log(e);
-    }
+        }); */
+      });
   } catch (e) {
-    console.log(e);
+    console.log(`[catchBlock]`, e);
   }
 };
 
-testRoutes.post(
-  '',
-  upload.single('file', (req, res, err, next) => {
-    if (err) {
-      console.log(err);
-      res.status(400).send('Error');
-    }
-    next();
-  }),
-  testHandler
-);
+testRoutes.post('', upload.single('file'), testHandler);
 
 export default testRoutes;
