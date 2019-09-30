@@ -1,18 +1,25 @@
+/* eslint-disable import/first */
 import { config } from 'dotenv';
-
-config();
-
-// eslint-disable-next-line import/first
 import ExpressApp from './expressApp';
-// eslint-disable-next-line import/first
-import DB_INIT from './config/db';
+import DBConfig from './config/db';
 
-const App = new ExpressApp().app;
-// eslint-disable-next-line prefer-destructuring
-const PORT = process.env.PORT;
+class Server {
+  constructor() {
+    config();
+    this.dbObj = new DBConfig();
+  }
 
-DB_INIT();
+  init() {
+    this.dbObj.DB_INIT();
+    this.App = new ExpressApp().app;
+    this.PORT = process.env.PORT;
 
-App.listen(PORT, () => {
-  console.log(`Server is listening on port: ${PORT}`);
-});
+    this.App.listen(this.PORT, () => {
+      console.log(`Server is listening on port: ${this.PORT}`);
+    });
+  }
+}
+
+const server = new Server();
+
+server.init();

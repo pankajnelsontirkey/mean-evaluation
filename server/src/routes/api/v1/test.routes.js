@@ -1,15 +1,14 @@
 /* eslint-disable new-cap */
 import express from 'express';
-
-import * as mongoose from 'mongoose';
 import * as multer from 'multer';
-import { Readable } from 'stream';
+
+import GridFs from '../../../utils/gridfs';
 
 const testRoutes = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-const testHandler = async (req, res) => {
+/* const testHandler = async (req, res) => {
   console.log(req.file.originalname);
   const readable = new Readable();
   readable.push(req.file.buffer);
@@ -44,10 +43,17 @@ const testHandler = async (req, res) => {
   } catch (e) {
     console.log(`[catchBlock]`, e);
   }
-};
+}; */
 
-testRoutes.post('', upload.single('file'), testHandler);
-
-testRoutes.get('');
+testRoutes.post('', upload.single('file'), async (req, res) => {
+  const gfs = new GridFs();
+  await gfs.initGridFs();
+  try {
+    gfs.createUploadStream(req.file);
+    gfs.uploadFile(res);
+  } catch (e) {
+    console.log(e);
+  }
+});
 
 export default testRoutes;

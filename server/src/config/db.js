@@ -1,30 +1,38 @@
 import mongoose from 'mongoose';
 
-const DB_OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
-
-const DB_INIT = async () => {
-  let DB_URI = '';
-  switch (process.env.NODE_ENV) {
-    /* using same db currently for dev & prod modes */
-    case 'development':
-      // DB_URI = process.env.DB_LOCAL_URI;
-      DB_URI = process.env.DB_CLOUD_URI;
-      break;
-    case 'production':
-      DB_URI = process.env.DB_CLOUD_URI;
-      break;
-    default:
-      // DB_URI = process.env.DB_LOCAL_URI;
-      DB_URI = process.env.DB_CLOUD_URI;
+export default class DBConfig {
+  constructor() {
+    this.setConnectionString();
+    this.setOptions();
   }
 
-  mongoose.Promise = global.Promise;
-
-  try {
-    await mongoose.connect(DB_URI, DB_OPTIONS);
-  } catch (e) {
-    console.log(e);
+  setConnectionString() {
+    /* NOTE: using same db currently for dev & prod modes */
+    switch (process.env.NODE_ENV) {
+      case 'development':
+        // this.DB_URL = process.env.DB_LOCAL_URI;
+        this.DB_URL = process.env.DB_CLOUD_URI;
+        break;
+      case 'production':
+        this.DB_URL = process.env.DB_CLOUD_URI;
+        break;
+      default:
+        // this.DB_URL = process.env.DB_LOCAL_URI;
+        this.DB_URL = process.env.DB_CLOUD_URI;
+    }
   }
-};
 
-export default DB_INIT;
+  setOptions() {
+    this.DB_OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
+  }
+
+  async DB_INIT() {
+    mongoose.Promise = global.Promise;
+
+    try {
+      await mongoose.connect(this.DB_URL, this.DB_OPTIONS);
+    } catch (e) {
+      console.log(`[mongoose.connect][error]: ${e.name} ${e.message} `);
+    }
+  }
+}
