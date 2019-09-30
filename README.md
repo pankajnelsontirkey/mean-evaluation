@@ -59,7 +59,7 @@ Data is being stored on MongoDB Atlas cluster instance.
 
 - File Sharing Module
 
-  - Uploading files (documents, images, videos) - TODO
+  - Uploading files (documents, images, videos) - DONE
   - Preview of uploading files - TODO
   - Share files with other users (friends) - TODO
   - View uploaded files - TODO

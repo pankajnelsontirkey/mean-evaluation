@@ -28,14 +28,10 @@ const testHandler = async (req, res) => {
         return bucket;
       })
       .then(bucket => {
-        console.log(readable);
-
         const uploadStream = bucket.openUploadStream(req.file.originalname);
-        const result = readable.pipe(uploadStream);
-        console.log(result);
+        readable.pipe(uploadStream);
 
-        res.send(`Testing`);
-        /* uploadStream.on('error', () => {
+        uploadStream.on('error', () => {
           return res.status(500).json({ message: 'Error uploading file.' });
         });
 
@@ -43,7 +39,7 @@ const testHandler = async (req, res) => {
           return res
             .status(201)
             .json({ message: 'File uploaded successfully.' });
-        }); */
+        });
       });
   } catch (e) {
     console.log(`[catchBlock]`, e);
@@ -51,5 +47,7 @@ const testHandler = async (req, res) => {
 };
 
 testRoutes.post('', upload.single('file'), testHandler);
+
+testRoutes.get('');
 
 export default testRoutes;
