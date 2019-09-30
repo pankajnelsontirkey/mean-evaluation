@@ -15,7 +15,7 @@ const testHandler = async (req, res) => {
   readable.push(req.file.buffer);
   readable.push(null);
   try {
-    const conn = await mongoose.connect(process.env.DB_CLOUD_URI, {
+    const conn = await mongoose.connect(process.env.DB_URL, {
       dbName: process.env.DB_NAME,
       useNewUrlParser: true,
       useUnifiedTopology: true
