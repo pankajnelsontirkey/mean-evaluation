@@ -7,21 +7,25 @@ File sharing application built on MEAN stack as part of training at VC.
 1. clone repository -
    `git clone <repo-url>`
 
-2. install dependencies for both client & server -
+2. Prerequisites -
+   Angular CLI 8.x.x or above
+   Node 10.16.x or above
+
+3) install dependencies for both client & server -
    `cd client` & `npm install`
    `cd server` & `npm install`
 
-3. edit '.env' file to add the following variables
+4) edit '.env' file to add the following variables
 
 - PORT - port for server;
 - CLIENT_URL - http://localhost: 4200 (default for angular dev server);
 - DB_CLOUD_URI - url for atlas instance;
 - SECRET - secret phrase for generating jwt tokens;
 
-4. Launch Express backend in terminal -
+5. Launch Express backend in terminal -
    `cd server` & `npm run build` & `npm run dev`
 
-5. Launch angular dev server in terminal -
+6. Launch angular dev server in terminal -
    `cd client` & `ng serve`
 
 ## Structure
