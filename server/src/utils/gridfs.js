@@ -21,6 +21,9 @@ class GridFs {
         ...this.DB_OPTIONS,
         dbName: this.DB_NAME
       });
+      if (this.dbHandle) {
+        console.log(`Connected to db for upload...`);
+      }
     } catch (e) {
       console.log(`[gridFs.js][connectToDb]: ${e}`);
     }
@@ -38,12 +41,27 @@ class GridFs {
   }
 
   createUploadStream(file) {
+    this.readable = new Readable();
+    this.readable.push(file.buffer);
     try {
-      this.readable = new Readable();
-      this.readable.push(file.buffer);
-      this.uploadStream = this.gfsBucket.openUploadStream(file.originalname);
+      return this.gfsBucket.openUploadStream(file.originalname);
     } catch (e) {
       console.log(`createUploadStream error`, e);
+      throw Error(e);
+    }
+  }
+
+  uploadFile(uploadStream) {
+    try {
+      this.readable.pipe(uploadStream);
+      uploadStream.on('error', () => {
+        throw Error('Upload error');
+      });
+      uploadStream.on('finish', () => {
+        console.log(`Finish`);
+      });
+    } catch (e) {
+      console.log(`uploadFile error`, e);
     }
   }
 
@@ -53,22 +71,6 @@ class GridFs {
       this.downloadStream = this.gfsBucket.openDownloadStream(filename);
     } catch (e) {
       console.log(e);
-    }
-  }
-
-  uploadFile(res) {
-    try {
-      this.readable.pipe(this.uploadStream);
-
-      this.uploadStream.on('error', () => {
-        return res.status(500).json({ message: 'Error uploading file.' });
-      });
-
-      this.uploadStream.on('finish', () => {
-        return res.status(201).json({ message: 'File uploaded successfully.' });
-      });
-    } catch (e) {
-      console.log(`uploadFile error`, e);
     }
   }
 
