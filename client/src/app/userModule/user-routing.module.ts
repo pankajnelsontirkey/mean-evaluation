@@ -14,7 +14,7 @@ const UserRoutes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    // canActivate: [UserGuard],
+    canActivate: [UserGuard],
     children: [
       // { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileComponent },

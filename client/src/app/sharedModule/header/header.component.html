@@ -1,9 +1,20 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top ">
-    <span title="MySharesApp" class="navbar-brand" id="home" (click)="onRedirectToHome()">
+    <span
+      title="MySharesApp"
+      class="navbar-brand"
+      id="home"
+      (click)="onRedirectToHome()"
+    >
       MySharesApp
       <fa-icon id="brand" [icon]="icons.faShareSquare"></fa-icon>
     </span>
+
+    <!-- <li class="ml-auto"> -->
+    <span class="navbar-brand ml-auto" id="username">
+      {{ currentUserName }}
+    </span>
+    <!-- </li> -->
 
     <button
       class="navbar-toggler d-lg-none"
@@ -22,10 +33,14 @@
     >
       <ul class="nav navbar-nav ml-auto">
         <li class="ml-auto">
-          <span class="navbar-brand ml-auto" id="username">{{ currentUserName }}</span>
-        </li>
-        <li class="ml-auto">
-          <span class="ml-auto" *ngIf="isLoggedIn" (click)="onLogout()" id="logout">Logout</span>
+          <span
+            class="ml-auto"
+            *ngIf="isLoggedIn"
+            (click)="onLogout()"
+            id="logout"
+          >
+            Logout
+          </span>
         </li>
       </ul>
     </div>
