@@ -14,9 +14,13 @@ class Server {
     this.App = new ExpressApp().app;
     this.PORT = process.env.PORT;
 
-    this.App.listen(this.PORT, () => {
-      console.log(`Server is listening on port: ${this.PORT}`);
-    });
+    try {
+      this.App.listen(this.PORT, () => {
+        console.log(`Server is listening on port: ${this.PORT}`);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
