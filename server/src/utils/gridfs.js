@@ -39,8 +39,6 @@ class GridFs {
 
   createUploadStream(file) {
     try {
-      console.log(file.buffer);
-
       this.readable = new Readable();
       this.readable.push(file.buffer);
       this.uploadStream = this.gfsBucket.openUploadStream(file.originalname);
