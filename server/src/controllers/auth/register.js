@@ -54,13 +54,14 @@ const register = async (req, res) => {
         }
 
         /* Send verification link via nodemailer */
+        /* 
         try {
           const mailer = new Mailer();
           mailer.setOptions({
             email: userItem.email,
             emailToken
           });
-          /* const mailerResponse = await mailer.sendMail();
+          const mailerResponse = await mailer.sendMail();
           let mailerResponseMessage = '';
           if (mailerResponse.accepted.length) {
             mailerResponseMessage += `Mail sent successfully to ${mailerResponse.accepted} with messageId: ${mailerResponse.messageId} \n`;
@@ -69,10 +70,11 @@ const register = async (req, res) => {
           if (mailerResponse.rejected.length) {
             mailerResponseMessage += `Sending mail failed to ${mailerResponse.rejected} \n`;
           }
-          console.log(mailerResponseMessage); */
+          console.log(mailerResponseMessage); 
         } catch (e) {
           throw Error(e);
         }
+       */
 
         responseHandler(res, 200, null, resMsg, {
           newUser: { id: userItem._id, email: userItem.email }

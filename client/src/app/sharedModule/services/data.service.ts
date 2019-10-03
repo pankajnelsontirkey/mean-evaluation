@@ -34,7 +34,9 @@ export class DataService {
          * Takes the searchText as param
          */
         this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .get(
+            `${environment.serverUrl}${environment.apiUrl}/users/search/:searchText`
+          )
           .subscribe(response => {
             console.log(response);
           });
@@ -65,7 +67,7 @@ export class DataService {
          */
         this.http
           .post(
-            `${environment.serverUrl}${environment.apiUrl}`,
+            `${environment.serverUrl}${environment.apiUrl}/friends/add`,
             {} /* , payload */
           )
           .subscribe(response => {
@@ -85,7 +87,7 @@ export class DataService {
          * Takes userId in req.body
          */
         this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .get(`${environment.serverUrl}${environment.apiUrl}/requests`)
           .subscribe(response => {
             console.log(response);
           });
@@ -97,7 +99,7 @@ export class DataService {
          */
         this.http
           .post(
-            `${environment.serverUrl}${environment.apiUrl}`,
+            `${environment.serverUrl}${environment.apiUrl}/requests/add`,
             {} /* , payload */
           )
           .subscribe(response => {

@@ -17,7 +17,6 @@ const friendsControllers = {
   getAllFriends: async (req, res) => {
     const { userId } = req;
     query = { _id: userId };
-    console.log(query);
 
     projection = { _id: 0, friends: 1 };
     try {

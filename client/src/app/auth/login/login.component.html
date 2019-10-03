@@ -2,7 +2,9 @@
   <form [formGroup]="loginForm" (submit)="onSubmit()">
     <!-- EMAIL -->
     <div class="form-group row">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
+      <div
+        class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3"
+      >
         <label for="email">Email</label>
         <input
           type="email"
@@ -15,7 +17,9 @@
         />
         <span
           class="help-text alert-danger"
-          *ngIf="loginForm.get('email').touched && !loginForm.get('email').valid"
+          *ngIf="
+            loginForm.get('email').touched && !loginForm.get('email').valid
+          "
         >
           Email is required.
         </span>
@@ -24,7 +28,9 @@
 
     <!-- PASSWORD -->
     <div class="form-group row">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
+      <div
+        class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3"
+      >
         <label for="password">Password</label>
         <input
           type="password"
@@ -39,16 +45,24 @@
 
     <!-- LOGIN BUTTON -->
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
-        <button type="submit" class="btn btn-primary" [disabled]="!this.isFormValid">
+      <div
+        class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3"
+      >
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!this.isFormValid"
+        >
           Login
         </button>
       </div>
     </div>
     <!-- LOGIN BUTTON -->
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3">
-        <button type="submit" class="btn btn-primary" (click)="goToRegister()">
+      <div
+        class="col-xs-12 col-sm-12 col-md-8 col-lg-6 offset-md-2 offset-lg-3"
+      >
+        <button type="button" class="btn btn-primary" (click)="goToRegister()">
           Register First
         </button>
       </div>

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../user.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-friend-manager',
@@ -8,9 +9,14 @@ import { UserService } from '../../user.service';
 })
 export class FriendManagerComponent implements OnInit {
   friends = [];
+
   constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.userService.getFriendsList();
+
+    this.initForm();
   }
+
+  initForm() {}
 }

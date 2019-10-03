@@ -20,7 +20,9 @@ const userSchema = new Schema(
     emailVerified: { type: Boolean, default: false },
     emailToken: { type: String, default: null },
     isLoggedIn: { type: Boolean, default: false },
-    loginToken: { type: String, default: null },
+    loginToken: {
+      type: { createdAt: { type: Date, expires: 3600, default: Date.now } }
+    },
     passwordResetToken: { type: String, default: null },
     passwordResetExpires: { type: Date, default: null },
     friends: [friendSchema],

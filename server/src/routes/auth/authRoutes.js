@@ -6,11 +6,7 @@ import { avatarUploader } from '../../utils/multer';
 const router = express.Router();
 
 /* REGISTER */
-router.post(
-  '/register',
-  avatarUploader.upload.single('avatar'),
-  authController.register
-);
+router.post('/register', authController.register);
 
 /* VERIFY EMAIL TOKEN */
 router.get('/verify/:emailToken', authController.verifyEmail);

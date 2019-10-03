@@ -12,9 +12,13 @@ import verifyAuth from '../../../middlewares/verifyAuth';
 const router = express.Router();
 
 router.use('/users', usersRoutes);
+/* User-only route */
 router.use('/friends', verifyAuth, friendsRoutes);
+/* User-only route */
 router.use('/requests', requestsRoutes);
+/* User-only route */
 router.use('/notifications', notificationsRoutes);
+/* User-only Routes */
 router.use('/files', uploadRoutes);
 
 /* Testing route for multer/gridfs file uploads */

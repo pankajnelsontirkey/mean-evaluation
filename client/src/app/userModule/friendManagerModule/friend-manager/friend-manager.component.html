@@ -1,7 +1,27 @@
 <div class="container">
   <h3>Friends</h3>
   <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+    <div
+      class="col-xs-12 col-sm-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 form-group"
+    >
+      <form (ngSubmit)="onSearchUser(f)" #f="ngForm">
+        <div class="col-xs-10 col-sm-8 col-md-8 col-lg-8">
+          <input
+            type="text"
+            name="searchUser"
+            id="searchUser"
+            placeholder="Name/Email"
+            class="form-control"
+            ndModel
+            required
+          />
+        </div>
+        <div class="col-xs-2 col-sm-4 col-md-4 col-lg-4">
+          <button type="submit" class="btn btn-primary" [disabled]="!f.valid">
+            Search
+          </button>
+        </div>
+      </form>
       <ul class="list-group"></ul>
     </div>
   </div>
