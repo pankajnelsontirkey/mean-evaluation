@@ -7,6 +7,7 @@
 import express from 'express';
 
 import friendsController from '../../../controllers/api/v1/friendsController';
+import verifyAuth from '../../../middlewares/verifyAuth';
 
 const friendsRoutes = express.Router();
 

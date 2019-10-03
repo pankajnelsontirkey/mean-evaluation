@@ -15,8 +15,10 @@ let update = {};
 const friendsControllers = {
   /* Get all friends of a user */
   getAllFriends: async (req, res) => {
-    const { userId } = req.body;
+    const { userId } = req;
     query = { _id: userId };
+    console.log(query);
+
     projection = { _id: 0, friends: 1 };
     try {
       await userModel.findOne(query, projection, (err, doc) => {

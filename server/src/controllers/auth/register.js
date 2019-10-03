@@ -16,8 +16,7 @@ const register = async (req, res) => {
 
     const userObj = {
       ...req.body,
-      password: passwordHash,
-      avatar: req.file.buffer
+      password: passwordHash
     };
 
     let resMsg = '';
@@ -61,16 +60,16 @@ const register = async (req, res) => {
             email: userItem.email,
             emailToken
           });
-          // const mailerResponse = await mailer.sendMail();
-          // let mailerResponseMessage = '';
-          // if (mailerResponse.accepted.length) {
-          //   mailerResponseMessage += `Mail sent successfully to ${mailerResponse.accepted} with messageId: ${mailerResponse.messageId} \n`;
-          //   resMsg += ` Check email for verification link`;
-          // }
-          // if (mailerResponse.rejected.length) {
-          //   mailerResponseMessage += `Sending mail failed to ${mailerResponse.rejected} \n`;
-          // }
-          // console.log(mailerResponseMessage);
+          /* const mailerResponse = await mailer.sendMail();
+          let mailerResponseMessage = '';
+          if (mailerResponse.accepted.length) {
+            mailerResponseMessage += `Mail sent successfully to ${mailerResponse.accepted} with messageId: ${mailerResponse.messageId} \n`;
+            resMsg += ` Check email for verification link`;
+          }
+          if (mailerResponse.rejected.length) {
+            mailerResponseMessage += `Sending mail failed to ${mailerResponse.rejected} \n`;
+          }
+          console.log(mailerResponseMessage); */
         } catch (e) {
           throw Error(e);
         }

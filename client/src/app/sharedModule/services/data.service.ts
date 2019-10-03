@@ -53,7 +53,7 @@ export class DataService {
          * Takes current userID in req.body
          */
         this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}`)
+          .get(`${environment.serverUrl}${environment.apiUrl}/friends`)
           .subscribe(response => {
             console.log(response);
           });
