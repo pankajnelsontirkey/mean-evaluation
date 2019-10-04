@@ -25,16 +25,8 @@ const usersController = {
           responseHandler(res, 500, err, 'Database error', null);
           throw Error(err);
         } else if (!docs) {
-          responseHandler(
-            res,
-            404,
-            { name: 'noUsers', errMsg: 'No users in database' },
-            'No users found',
-            null
-          );
-          throw Error({
-            name: 'noUsers',
-            errMsg: 'No users in database'
+          responseHandler(res, 200, null, 'No registered users found.', {
+            users: []
           });
         } else {
           responseHandler(res, 200, null, 'Found users.', docs);
@@ -58,16 +50,17 @@ const usersController = {
           responseHandler(
             res,
             404,
-            {
-              name: 'noUsers',
-              errMsg: 'No users in database'
-            },
+            { name: 'noUsers', errMsg: 'No users in database' },
             'No users found',
             null
           );
           throw Error({
             name: 'noUsers',
             errMsg: 'No users in database'
+          });
+        } else if (!docs.length) {
+          responseHandler(res, 200, null, 'No users found.', {
+            users: []
           });
         } else {
           responseHandler(res, 200, null, 'Found users.', docs);

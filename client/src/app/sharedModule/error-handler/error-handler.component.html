@@ -1,10 +1,16 @@
-<div class="container">
-  <div>
-    <ul class="list-group" *ngIf="show">
-      <li class="list-item" *ngFor="let error of errors">
-        <span>{{ error.name }}</span>
-        <span>{{ error.message }}</span>
-      </li>
-    </ul>
+<div class="backdrop" *ngIf="hasErrors" (click)="closeErrorModal()"></div>
+
+<div class="error-modal" *ngIf="hasErrors">
+  Display Errors here.
+  <button class="btn btn-danger ml-auto" (click)="closeErrorModal()">X</button>
+  <div class="container">
+    <div>
+      <ul class="list-group" *ngIf="hasErrors">
+        <li class="list-item" *ngFor="let error of errors">
+          <span>{{ error.name }}</span>
+          <span>{{ error.message }}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

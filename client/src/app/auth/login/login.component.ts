@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
 
     this.initForm();
+
     this.formValidSubscription = this.loginForm.statusChanges.subscribe(
       status => {
         status === 'VALID'

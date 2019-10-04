@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IError } from 'src/app/shared/interfaces/errorInterface';
 import { BehaviorSubject } from 'rxjs';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
 @Component({
   selector: 'app-error-handler',
@@ -12,12 +13,14 @@ export class ErrorHandlerComponent implements OnInit {
   errors: IError[] = null;
   errorsChanged = new BehaviorSubject(null);
 
-  constructor() {}
+  constructor(private errorHandlerService: ErrorHandlerService) {}
 
   ngOnInit() {
     /* Call error handler service */
-    this.errorsChanged.subscribe(errors => {
-      errors ? (this.hasErrors = true) : (this.hasErrors = false);
+
+    this.errorHandlerService.errorsChanged.subscribe(errors => {
+      errors.length ? (this.hasErrors = true) : (this.hasErrors = false);
+      this.errors = errors;
     });
   }
 
@@ -30,5 +33,10 @@ export class ErrorHandlerComponent implements OnInit {
   removeError(errorIndex: number) {
     this.errors.splice(errorIndex, 1);
     this.errorsChanged.next({ ...this.errors });
+  }
+
+  closeErrorModal() {
+    this.hasErrors = false;
+    this.errors = [];
   }
 }

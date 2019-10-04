@@ -37,28 +37,20 @@ const friendsControllers = {
           } else {
             const { friends } = doc;
             if (!friends.length) {
-              responseHandler(
-                res,
-                204,
-                { name: 'noFriendsFound', errMsg: 'No friends were found' },
-                'The user has no friends',
-                []
-              );
-              throw Error({
-                name: 'noFriendsFound',
-                errMsg: 'Friends were found'
+              responseHandler(res, 200, null, 'No friends found.', {
+                friends: []
               });
             } else {
               responseHandler(res, 200, null, 'Friends found', { friends });
             }
           }
         } catch (e) {
-          console.log(`error: ${e.name}\nmessage: ${e.message}`);
+          console.log(`error: ${e.name}\nmessage: ${{ ...e.message }}`);
         }
       });
     } catch (e) {
       // responseHandler(res, 500, e, 'Server Error Occurred', null);
-      console.log(`error: ${e.name}\nmessage: ${e.message}`);
+      console.log(`error: ${e.name}\nmessage: ${{ ...e.message }}`);
     }
   },
 

@@ -5,8 +5,8 @@
  */
 
 const responseHandler = (res, code, err, msg, body) => {
-  const success = code === 200;
-  const error = err ? { name: err.name, message: err.errmsg } : null;
+  const success = code === 200 || code === 204;
+  const error = err ? { ...err } : null;
   const data = body;
   const message = msg;
 

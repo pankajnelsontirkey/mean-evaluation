@@ -10,40 +10,34 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment';
+import { IResponse } from 'src/app/shared/interfaces/responseInterface';
+import { IServiceResponse } from 'src/app/shared/interfaces/serviceInterface';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  users(type: string) {
+  users(type: string, query?: any) {
     switch (type) {
       case 'fetch':
         /**
          * Make http request to 'api/v1/users/' GET
          * Takes no body
          */
-        this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}/users`)
-          .subscribe(response => {
-            console.log(response);
-          });
-        break;
+        return this.http.get(
+          `${environment.serverUrl}${environment.apiUrl}/users`
+        );
       case 'search':
         /**
          * Make http request to 'api/v1/users/search/:searchText' GET
          * Takes the searchText as param
          */
-        this.http
-          .get(
-            `${environment.serverUrl}${environment.apiUrl}/users/search/:searchText`
-          )
-          .subscribe(response => {
-            console.log(response);
-          });
-        break;
+        return this.http.get<IResponse>(
+          `${environment.serverUrl}${environment.apiUrl}/users/search/${query}`
+        );
       default:
         /* Return/Dont make a request */
-        break;
+        return;
     }
   }
 
@@ -52,28 +46,22 @@ export class DataService {
       case 'fetch':
         /**
          * Make http request to 'api/v1/friends/ GET
-         * Takes current userID in req.body
+         * Takes current userID in req.params
          */
-        this.http
-          .get(`${environment.serverUrl}${environment.apiUrl}/friends`)
-          .subscribe(response => {
-            console.log(response);
-          });
-        break;
+        return this.http.get<IResponse>(
+          `${environment.serverUrl}${environment.apiUrl}/friends`
+        );
       case 'add':
         /**
          * Make http request to 'api/v1/friends/add' POST
          * Takes fromUser, toUser in req.body
          */
-        this.http
-          .post(
-            `${environment.serverUrl}${environment.apiUrl}/friends/add`,
-            {} /* , payload */
-          )
-          .subscribe(response => {
-            console.log(response);
-          });
+        return this.http.post<IResponse>(
+          `${environment.serverUrl}${environment.apiUrl}/friends/add`,
+          {} /* , payload */
+        );
       default:
+        return;
         /* Return/Don't make a request */
         break;
     }
