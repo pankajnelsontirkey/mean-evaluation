@@ -11,7 +11,7 @@ export class FriendManagerService {
 
   getFriendsList() {
     let serviceResponse = {};
-    return this.dataService.friends('fetch').pipe<IServiceResponse>(
+    return this.dataService.getFriends().pipe<IServiceResponse>(
       map(response => {
         if (response.error) {
           serviceResponse = {
@@ -30,8 +30,22 @@ export class FriendManagerService {
   }
 
   searchForFriends(searchText: string) {
-    return this.dataService.users('search', searchText).subscribe(response => {
-      console.log(response);
-    });
+    let serviceResponse = {};
+    return this.dataService.users('search', searchText).pipe<IServiceResponse>(
+      map(response => {
+        if (response.error) {
+          serviceResponse = {
+            error: response.error,
+            message: response.message
+          };
+        } else if (response.success) {
+          serviceResponse = {
+            data: response.data.users,
+            message: response.message
+          };
+        }
+        return serviceResponse;
+      })
+    );
   }
 }

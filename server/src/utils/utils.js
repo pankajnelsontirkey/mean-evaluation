@@ -25,13 +25,17 @@ const utils = {
   },
 
   /* Method to generate loginToken after successful login */
-  generateLoginToken: async (userId, userRole) =>
-    jwt.sign({ _id: userId, role: userRole }, process.env.SECRET),
+  generateLoginToken: (userId, userRole) =>
+    jwt.sign({ _id: userId, role: userRole, exp: 60 }, process.env.SECRET),
 
   /* Method to check if login token is valid */
   checkLoginToken: userToken => {
-    const decodedUser = jwt.verify(userToken, process.env.SECRET);
-    return decodedUser;
+    try {
+      const decodedUser = jwt.verify(userToken, process.env.SECRET);
+      return decodedUser;
+    } catch (e) {
+      return { error: { name: e.name, message: e.message } };
+    }
   },
 
   bcryptGenerateHash: async password => {

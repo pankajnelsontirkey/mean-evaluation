@@ -50,10 +50,9 @@ export class FriendManagerComponent implements OnInit, OnDestroy {
 
   onSearchUser() {
     if (this.searchUserForm.valid) {
-      console.log(this.searchUserForm.value.searchText);
+      const searchText = this.searchUserForm.value.searchText;
+      this.friendMangerService.searchForFriends(searchText);
     }
-    const searchText = this.searchUserForm.value.searchText;
-    this.friendMangerService.searchForFriends(searchText);
   }
 
   ngOnDestroy() {

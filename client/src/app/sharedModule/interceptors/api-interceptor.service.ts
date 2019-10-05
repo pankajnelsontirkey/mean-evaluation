@@ -18,11 +18,12 @@ export class ApiInterceptorService implements HttpInterceptor {
       exhaustMap(user => {
         if (!user) {
           return next.handle(req);
+        } else {
+          const modifiedReq = req.clone({
+            setHeaders: { authorization: `Bearer ${user.loginToken}` }
+          });
+          return next.handle(modifiedReq);
         }
-        const modifiedReq = req.clone({
-          setHeaders: { auth: user.loginToken }
-        });
-        return next.handle(modifiedReq);
       })
     );
   }

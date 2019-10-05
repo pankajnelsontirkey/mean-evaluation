@@ -106,10 +106,10 @@ const friendsControllers = {
             };
             await userModel.updateOne(query, update, (err1, doc1) => {
               if (err1) {
-                console.log(`Error1: ${{ ...err1 }}`);
+                console.log('Error1: ', err1);
                 throw Error({ ...err1 });
               } else {
-                console.log(`Doc1: ${doc1}`);
+                console.log('Doc1: ', doc1);
               }
             });
           } catch (e) {
@@ -128,16 +128,15 @@ const friendsControllers = {
             };
             await userModel.updateOne(query, update, (err2, doc2) => {
               if (err2) {
-                console.log(`Error2: ${{ ...err2 }}`);
+                console.log('Error2: ', err2);
                 throw Error({ ...err2 });
               } else {
-                console.log(`Doc2: ${doc2}`);
+                console.log('Doc2:', doc2);
               }
             });
           } catch (e) {
             throw Error(e);
           }
-
           responseHandler(
             res,
             200,

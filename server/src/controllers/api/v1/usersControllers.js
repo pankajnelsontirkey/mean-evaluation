@@ -43,6 +43,8 @@ const usersController = {
 
     try {
       await userModel.find(query, projection, (err, docs) => {
+        console.log(docs);
+
         if (err) {
           responseHandler(res, 500, err, 'Database error', null);
           throw Error(err);
@@ -63,7 +65,7 @@ const usersController = {
             users: []
           });
         } else {
-          responseHandler(res, 200, null, 'Found users.', docs);
+          responseHandler(res, 200, null, 'Found users.', { users: docs });
         }
       });
     } catch (e) {

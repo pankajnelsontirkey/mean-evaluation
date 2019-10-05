@@ -11,6 +11,8 @@ import utils from '../../utils/utils';
 
 const autoLogin = async (req, res) => {
   try {
+    console.log(req.headers);
+
     const { loginToken } = req.params;
     const { _id } = utils.checkLoginToken(loginToken);
 
