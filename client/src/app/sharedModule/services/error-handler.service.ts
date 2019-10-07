@@ -9,10 +9,6 @@ export class ErrorHandlerService {
 
   constructor() {}
 
-  fetchErrors(): IError[] {
-    return [...this.errors];
-  }
-
   addToErrors(error: IError) {
     this.errors.push(error);
     this.errorsChanged.next([...this.errors]);
@@ -20,6 +16,11 @@ export class ErrorHandlerService {
 
   removeFromErrors(index: number) {
     this.errors.splice(index, 1);
+    this.errorsChanged.next([...this.errors]);
+  }
+
+  clearAllErrors() {
+    this.errors = [];
     this.errorsChanged.next([...this.errors]);
   }
 }

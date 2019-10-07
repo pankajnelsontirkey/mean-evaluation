@@ -10,6 +10,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IResponse } from '../shared/interfaces/responseInterface';
 import { Router } from '@angular/router';
+import { ErrorHandlerService } from '../sharedModule/services/error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,11 @@ export class AuthService {
   currentUserChanged = new BehaviorSubject<ICurrentUser>(this.currentUser);
   subscription: Subscription;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private errorHandlerSerice: ErrorHandlerService
+  ) {}
 
   register(registerData: IRegister) {
     /* Make http request to backend */
@@ -108,9 +113,8 @@ export class AuthService {
             )
             .subscribe(response => {
               if (response.error) {
-                console.log(response.error);
-
-                throw Error(response.error);
+                console.log('[subscribe block]', response.error);
+                this.errorHandlerSerice.addToErrors(response.error.error);
               } else {
                 const { data } = { ...response };
                 this.currentUser = { ...data };
@@ -119,7 +123,7 @@ export class AuthService {
               }
             });
         } catch (e) {
-          console.log(e);
+          console.log('catchBlock', e);
         }
       }
     }

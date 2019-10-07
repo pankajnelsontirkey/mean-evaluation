@@ -26,7 +26,7 @@ const utils = {
 
   /* Method to generate loginToken after successful login */
   generateLoginToken: (userId, userRole) =>
-    jwt.sign({ _id: userId, role: userRole, exp: 60 }, process.env.SECRET),
+    jwt.sign({ _id: userId, role: userRole, exp: 3600 }, process.env.SECRET),
 
   /* Method to check if login token is valid */
   checkLoginToken: userToken => {

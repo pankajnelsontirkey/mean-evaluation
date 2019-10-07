@@ -3,7 +3,6 @@ import { map } from 'rxjs/operators';
 
 import { DataService } from 'src/app/sharedModule/services/data.service';
 import { IServiceResponse } from 'src/app/shared/interfaces/serviceInterface';
-import { IResponse } from 'src/app/shared/interfaces/responseInterface';
 
 @Injectable()
 export class FriendManagerService {
@@ -31,7 +30,7 @@ export class FriendManagerService {
 
   searchForFriends(searchText: string) {
     let serviceResponse = {};
-    return this.dataService.users('search', searchText).pipe<IServiceResponse>(
+    return this.dataService.searchUsers(searchText).pipe<IServiceResponse>(
       map(response => {
         if (response.error) {
           serviceResponse = {

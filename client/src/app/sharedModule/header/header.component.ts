@@ -5,6 +5,7 @@ import { faShareSquare } from '@fortawesome/free-regular-svg-icons';
 // import {} from '@fortawesome/free-brands-svg-icons';
 
 import { AuthService } from 'src/app/auth/auth.service';
+import { ErrorHandlerService } from '../services/error-handler.service';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +20,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentUserSubscription: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private errorHandlerService: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.currentUserSubscription = this.authService.currentUserChanged.subscribe(

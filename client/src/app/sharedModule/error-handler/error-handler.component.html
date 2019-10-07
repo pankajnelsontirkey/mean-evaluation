@@ -1,14 +1,24 @@
 <div class="backdrop" *ngIf="hasErrors" (click)="closeErrorModal()"></div>
 
 <div class="error-modal" *ngIf="hasErrors">
-  Display Errors here.
-  <button class="btn btn-danger ml-auto" (click)="closeErrorModal()">X</button>
+  <h3>Something broke!</h3>
+  <button
+    class="btn btn-danger ml-auto"
+    (click)="closeErrorModal()"
+    id="closeModalBtn"
+  >
+    X
+  </button>
   <div class="container">
     <div>
       <ul class="list-group" *ngIf="hasErrors">
-        <li class="list-item" *ngFor="let error of errors">
+        <li
+          class="list-item error-item"
+          *ngFor="let error of errors; index as idx"
+        >
           <span>{{ error.name }}</span>
           <span>{{ error.message }}</span>
+          <!-- <span class="btn btn-danger" (click)="removeError(idx)">x</span> -->
         </li>
       </ul>
     </div>
