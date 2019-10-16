@@ -10,9 +10,9 @@ export const configDefault = {
   secure: false, // true only for port 465
   auth: {
     /* senders email */
-    user: 'pankaj.tirkey@mail.vinove.com',
+    user: process.env.EMAIL_USER,
     /* senders password */
-    pass: 'pankaj@123'
+    pass: process.env.EMAIL_PASS
   },
   tls: {
     rejectUnauthorized: false
